@@ -1,0 +1,4 @@
+# Architecture candidate
+Vite + TypeScript strict + React pour l'interface; Phaser 3 candidat pour la scène 2D/2.5D. Les maquettes 3D ne constituent pas une promesse technique: mesurer un prototype avant de retenir le moteur. Mode accessible React indépendant du rendu jeu. Déploiement statique GitHub Pages avec base relative, sans backend obligatoire.
+Séparer domain (missions, réflexion, comparaison), data (imports et validation), game (scène et collisions), UI, persistence (stockage local versionné, export et effacement). Aucun secret ni appel IA obligatoire. IA éventuelle via architecture approuvée ultérieurement.
+Tests Vitest, Playwright, axe; build reproductible avec lockfile; vérifier chemins relatifs, absence d'erreurs console, clavier, mobile, collisions, réduction des animations. Mesurer performance sur matériel cible avant d'annoncer un seuil atteint.
