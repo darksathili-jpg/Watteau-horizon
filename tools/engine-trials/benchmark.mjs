@@ -13,13 +13,13 @@ const root = fileURLToPath(new URL('../../', import.meta.url))
 const experiment = resolve(root, 'experiments/engine-trials')
 const protocol = JSON.parse(await readFile(resolve(root, 'production/engine-protocol.json')))
 const { values } = parseArgs({
-  options: { out: { type: 'string' }, dist: { type: 'string' }, smoke: { type: 'boolean', default: false }, case: { type: 'string' }, 'cold-only': { type: 'boolean', default: false }, video: { type: 'boolean', default: false } },
+  options: { out: { type: 'string' }, dist: { type: 'string' }, smoke: { type: 'boolean', default: false }, case: { type: 'string' }, 'cold-only': { type: 'boolean', default: false }, 'motion-only': { type: 'boolean', default: false }, video: { type: 'boolean', default: false } },
 })
 const out = resolve(values.out ?? `quality-results/engine-trials-${Date.now()}`)
 const dist = resolve(values.dist ?? resolve(experiment, 'dist'))
 await mkdir(dirname(out), { recursive: true })
 await mkdir(out)
-const probes = values.smoke ? 1 : protocol.minimumColdRunsPerCombination
+const probes = values['motion-only'] ? 0 : values.smoke ? 1 : protocol.minimumColdRunsPerCombination
 const seconds = values.smoke ? 3 : protocol.movementSampleSeconds
 const labels = { phaser: 'Phaser Canvas', three: 'Three.js', godot: 'Godot 4 Web' }
 const engines = Object.keys(labels)
@@ -27,9 +27,11 @@ const profiles = {
   desktop: { viewport: { width: 1440, height: 960 }, isMobile: false, hasTouch: false },
   mobile: { viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true },
 }
-if (values['cold-only'] && (!values.case || values.smoke || values.video)) throw new Error('La reprise à froid exige --case, sans --smoke ni --video.')
-if (values.case && (!(values.smoke || values['cold-only']) || !engines.some((engine) => Object.keys(profiles).some((profile) => values.case === `${engine}-${profile}`)))) {
-  throw new Error('Un cas ciblé exige --smoke ou --cold-only et un couple moteur-profil connu.')
+if ((values['cold-only'] || values['motion-only']) && (!values.case || values.smoke || values.video || (values['cold-only'] && values['motion-only']))) {
+  throw new Error('Une reprise ciblée exige --case et une seule phase, sans --smoke ni --video.')
+}
+if (values.case && (!(values.smoke || values['cold-only'] || values['motion-only']) || !engines.some((engine) => Object.keys(profiles).some((profile) => values.case === `${engine}-${profile}`)))) {
+  throw new Error('Un cas ciblé exige --smoke, --cold-only ou --motion-only et un couple moteur-profil connu.')
 }
 const noMatch = (engine, profile) => values.case && values.case !== `${engine}-${profile}`
 const storageKey = (engine) => `watteau-engine-trials:v1:${engine}`
@@ -51,7 +53,8 @@ const browser = await chromium.launch({
 })
 const report = {
   schema: 1,
-  label: values.smoke ? 'smoke' : values['cold-only'] ? 'preselection-cold-check' : 'preselection-emulated',
+  label: values.smoke ? 'smoke' : values['cold-only'] ? 'preselection-cold-check'
+    : values['motion-only'] ? 'preselection-motion-check' : 'preselection-emulated',
   revision: (await git(root, 'rev-parse', 'HEAD')).toString().trim(),
   sceneSha256: sha256(await readFile(resolve(experiment, 'scene.json'))),
   versions: { phaser: '3.90.0', three: '0.187.0', godot: '4.7.2-stable', chromium: browser.version() },
@@ -169,6 +172,7 @@ async function motion(engine, profile) {
   try {
     await browserCase.launch()
     await ready(page)
+    await page.waitForLoadState('networkidle', { timeout: 12000 })
     await page.locator('#world').focus()
     await page.evaluate(() => window.watteauTrial.startSample())
     const end = performance.now() + seconds * 1000
@@ -372,6 +376,12 @@ try {
   }
   for (const item of Object.values(report.cases)) {
     if (item.blocked) continue
+    if (values['motion-only']) {
+      item.motion = await motion(item.engine, item.profile)
+      console.log(`${item.engine} ${item.profile} · mouvement ${item.motion.status} · p95 ${item.motion.p95Ms ?? item.motion.reason}`)
+      await checkpoint()
+      continue
+    }
     const valid = item.cold.filter(({ status }) => status === 'measured')
     item.startup = {
       measured: valid.length, medianMs: quantile(valid.map(({ readyMs }) => readyMs), 0.5),
@@ -404,10 +414,14 @@ try {
   }
 }
 
-const failures = Object.values(report.cases).filter((item) => !item.blocked
-  && (item.startup?.measured !== probes || (!values['cold-only'] && (item.functional?.status !== 'passed' || item.motion?.status !== 'measured'))
+const failures = Object.values(report.cases).filter((item) => {
+  if (item.blocked) return Boolean(values.case)
+  if (values['motion-only']) return item.motion?.status !== 'measured' || item.motion.errors.length > 0
+  return item.startup?.measured !== probes
+    || (!values['cold-only'] && (item.functional?.status !== 'passed' || item.motion?.status !== 'measured'))
     || (values.video && item.video?.status !== 'recorded')
-    || [...item.cold, item.motion, item.video].some((part) => part?.errors.length)))
+    || [...item.cold, item.motion, item.video].some((part) => part?.errors.length)
+})
 const real = engines.filter((engine) => Object.keys(profiles).every((profile) => report.cases[`${engine}-${profile}`]?.functional?.status === 'passed'))
 console.log(`Preuves dans ${out}. Moteurs avec deux parcours validés : ${real.join(', ')}.`)
 if (failures.length || (!values.case && real.length < 2)) process.exitCode = 1
