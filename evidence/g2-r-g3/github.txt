@@ -1,0 +1,15 @@
+Dépôt et mode Pages
+{"default_branch":"main","has_pages":false,"visibility":"public"}
+{"conclusion":"success","event":"push","headSha":"d9b43e5a8af0fbcb7516a964f634058ce1f0f815","jobs":[{"conclusion":"success","name":"prototype"}],"status":"completed","url":"https://github.com/darksathili-jpg/Watteau-horizon/actions/runs/45741759535"}
+{"conclusion":"success","event":"push","headSha":"1a3e8ad0dcbe51e9308fed1d170b154b42a7fb91","jobs":[{"conclusion":"success","name":"prototype"}],"status":"completed","url":"https://github.com/darksathili-jpg/Watteau-horizon/actions/runs/45741907760"}
+{"conclusion":"success","event":"push","headSha":"05d0f4d11f54007067256f373d6b8df6295a0db6","jobs":[{"conclusion":"success","name":"prototype"}],"status":"completed","url":"https://github.com/darksathili-jpg/Watteau-horizon/actions/runs/45742964888"}
+{"conclusion":"failure","event":"workflow_dispatch","headSha":"05d0f4d11f54007067256f373d6b8df6295a0db6","jobs":[{"conclusion":"success","name":"checks / prototype"},{"conclusion":"success","name":"package"},{"conclusion":"failure","name":"preview"}],"status":"completed","url":"https://github.com/darksathili-jpg/Watteau-horizon/actions/runs/45742966391"}
+
+Erreur exacte de déploiement Pages
+preview	Déployer la prévisualisation	2026-11-26T02:32:36.2511404Z Creating Pages deployment with payload:
+preview	Déployer la prévisualisation	2026-11-26T02:32:36.4896039Z ##[error]Creating Pages deployment failed
+preview	Déployer la prévisualisation	2026-11-26T02:32:36.5968564Z ##[error]HttpError: Not Found
+preview	Déployer la prévisualisation	2026-11-26T02:32:36.6260621Z ##[error]Error: Failed to create deployment (status: 404) with build version 05d0f4d11f54007067256f373d6b8df6295a0db6. Request ID 3956:27EFF0:62952:1355A3:6B079A44 Ensure GitHub Pages has been enabled: https://github.com/darksathili-jpg/Watteau-horizon/settings/pages
+
+Configuration demandée via gh api POST /repos/darksathili-jpg/Watteau-horizon/pages (build_type=workflow)
+HTTP 403 — Resource not accessible by integration

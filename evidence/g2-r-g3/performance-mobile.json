@@ -1,0 +1,9 @@
+{
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "mode": "Chromium headless, mobile tactile émulé, localhost",
+  "navigationToReadyMs": 679,
+  "observedPhaserFps": 60
+}

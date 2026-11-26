@@ -1,0 +1,48 @@
+{
+  "browser": "156.0.8078.79",
+  "platform": "linux",
+  "viewport": {
+    "width": 1440,
+    "height": 960
+  },
+  "mode": "Chromium headless, localhost, cache froid au démarrage",
+  "timeToReadyMs": 320,
+  "observedPhaserFps": 61,
+  "animation": {
+    "frames": 90,
+    "medianMs": 16.7,
+    "p95Ms": 16.7,
+    "maxMs": 16.8,
+    "framesOver32Ms": 0
+  },
+  "resourcesAfter": [
+    {
+      "path": "/Watteau-horizon/assets/index-CDEGE2b4.js",
+      "decodedBytes": 248062
+    },
+    {
+      "path": "/Watteau-horizon/assets/index-Dr4RQ9DD.css",
+      "decodedBytes": 15081
+    },
+    {
+      "path": "/Watteau-horizon/art/antoine-portrait.png",
+      "decodedBytes": 1526
+    },
+    {
+      "path": "/Watteau-horizon/art/antoine-portrait.png",
+      "decodedBytes": 1526
+    },
+    {
+      "path": "/Watteau-horizon/assets/createCampus-CVmw8li3.js",
+      "decodedBytes": 1197786
+    },
+    {
+      "path": "/Watteau-horizon/art/campus.webp",
+      "decodedBytes": 57276
+    },
+    {
+      "path": "/Watteau-horizon/art/antoine-atlas.png",
+      "decodedBytes": 3592
+    }
+  ]
+}

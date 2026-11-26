@@ -1,0 +1,9 @@
+$ node --version
+v24.22.3
+$ npm --version
+11.19.1
+$ npm ci --no-fund --no-audit
+
+added 51 packages in 3s
+$ npm audit --audit-level=moderate
+found 0 vulnerabilities

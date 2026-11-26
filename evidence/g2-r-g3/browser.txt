@@ -1,0 +1,28 @@
+Chromium 156.0.8078.79 built on Debian GNU/Linux 13 (trixie)
+
+$ WATTEAU_EXPECT_PREVIEW=1 PLAYWRIGHT_CHROMIUM_EXECUTABLE=/usr/bin/chromium WATTEAU_EVIDENCE_DIR=evidence/g2-r-g3 npm run test:e2e
+
+> watteau-horizon@0.1.0 test:e2e
+> playwright test
+
+
+Running 9 tests using 1 worker
+
+  ✓  1 tests/prototype.spec.ts:89:1 › termine la mission en jeu au clavier et reprend position et progression (8.8s)
+  ✓  2 tests/prototype.spec.ts:146:1 › propose les mêmes étapes sans jeu, puis enregistre, exporte et efface le carnet (2.5s)
+  ✓  3 tests/prototype.spec.ts:203:1 › conserve un carnet exportable en session lorsque le stockage est indisponible (952ms)
+  ✓  4 tests/prototype.spec.ts:224:1 › bloque Antoine sur une jardinière et vérifie les poses avec et sans animation (3.0s)
+axe — Campus : 0 violation sur 24 règles applicables réussies.
+axe — Parcours sans jeu : 0 violation sur 23 règles applicables réussies.
+axe — Dialogue de mission : 0 violation sur 17 règles applicables réussies.
+axe — Carnet : 0 violation sur 22 règles applicables réussies.
+axe — Formations : 0 violation sur 25 règles applicables réussies.
+  ✓  5 tests/prototype.spec.ts:264:1 › respecte les préférences système et passe axe sur les vues et le dialogue (3.8s)
+{"viewport":{"width":390,"height":844},"mode":"Chromium headless, mobile tactile émulé, localhost","navigationToReadyMs":679,"observedPhaserFps":60}
+  ✓  6 tests/prototype.spec.ts:292:3 › Mobile tactile › affiche le campus sur mobile et accepte les commandes tactiles (2.0s)
+  ✓  7 tests/prototype.spec.ts:326:1 › cadre Antoine, bascule en vue fixe et ouvre seulement le repère proche (2.3s)
+  ✓  8 tests/prototype.spec.ts:365:1 › compare deux fiches officielles, expose leur provenance et indique les données manquantes (2.3s)
+{"browser":"156.0.8078.79","platform":"linux","viewport":{"width":1440,"height":960},"mode":"Chromium headless, localhost, cache froid au démarrage","timeToReadyMs":320,"observedPhaserFps":61,"animation":{"frames":90,"medianMs":16.7,"p95Ms":16.7,"maxMs":16.8,"framesOver32Ms":0},"resourcesAfter":[{"path":"/Watteau-horizon/assets/index-CDEGE2b4.js","decodedBytes":248062},{"path":"/Watteau-horizon/assets/index-Dr4RQ9DD.css","decodedBytes":15081},{"path":"/Watteau-horizon/art/antoine-portrait.png","decodedBytes":1526},{"path":"/Watteau-horizon/art/antoine-portrait.png","decodedBytes":1526},{"path":"/Watteau-horizon/assets/createCampus-CVmw8li3.js","decodedBytes":1197786},{"path":"/Watteau-horizon/art/campus.webp","decodedBytes":57276},{"path":"/Watteau-horizon/art/antoine-atlas.png","decodedBytes":3592}]}
+  ✓  9 tests/prototype.spec.ts:399:1 › mesure le coût des modes sans jeu et jeu sur le build statique (3.7s)
+
+  9 passed (31.0s)

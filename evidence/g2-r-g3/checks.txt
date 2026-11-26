@@ -1,0 +1,148 @@
+$ VITE_WATTEAU_PREVIEW=1 npm run build
+
+> watteau-horizon@0.1.0 build
+> npm run catalogue:check && npm run typecheck && vite build
+
+
+> watteau-horizon@0.1.0 catalogue:check
+> node --experimental-strip-types tools/import-catalogue.mjs --check
+
+{
+  "coverage": {
+    "sourceUrl": "https://data.enseignementsup-recherche.gouv.fr/explore/dataset/fr-esr-cartographie_formations_parcoursup/",
+    "publisher": "Ministère de l'Enseignement supérieur, de la Recherche et de l'Espace",
+    "license": "Licence Ouverte v2.0 (Etalab)",
+    "licenseUrl": "https://www.etalab.gouv.fr/wp-content/uploads/2017/04/ETALAB-Licence-Ouverte-v2.0.pdf",
+    "campaign": "2026",
+    "collectedOn": "2026-11-26",
+    "sourceUpdatedOn": "2026-10-22",
+    "scope": "Sélection d’offres liées au numérique à Valenciennes, Anzin, Aulnoy-lez-Valenciennes et Famars.",
+    "scopeCommunes": [
+      "Valenciennes",
+      "Aulnoy-lez-Valenciennes",
+      "Anzin",
+      "Famars"
+    ],
+    "campaignRows": 25793,
+    "localAllFieldsRows": 129,
+    "inputRows": 16,
+    "acceptedRows": 16,
+    "populatedFields": {
+      "name": 16,
+      "institution": 16,
+      "city": 16,
+      "type": 16,
+      "modality": 3,
+      "durationYears": 0,
+      "officialUrl": 16
+    },
+    "sha256": "2bf812da800888e899cab09131fd99dea67a74f368bb33903b3717a6ca4580ca"
+  },
+  "quarantine": [],
+  "missingFormationCodes": []
+}
+
+> watteau-horizon@0.1.0 typecheck
+> tsc --noEmit
+
+vite v8.3.8 building client environment for production...
+transforming...
+✓ 29 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                           0.99 kB │ gzip:   0.51 kB
+dist/THIRD-PARTY-NOTICES.md               4.57 kB
+dist/assets/index-Dr4RQ9DD.css           15.08 kB │ gzip:   4.09 kB
+dist/assets/Formations-7ROmOuuK.js       55.98 kB │ gzip:   3.99 kB
+dist/assets/index-CDEGE2b4.js           248.06 kB │ gzip:  78.66 kB
+dist/assets/createCampus-CVmw8li3.js  1,197.78 kB │ gzip: 320.11 kB
+
+[plugin builtin:vite-reporter]
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 647ms
+
+$ npm run check:static
+
+> watteau-horizon@0.1.0 check:static
+> node tests/check-static.mjs
+
+Formations-7ROmOuuK.js: 55985 octets, gzip 3916
+createCampus-CVmw8li3.js: 1197786 octets, gzip 318623
+index-CDEGE2b4.js: 248062 octets, gzip 77845
+index-Dr4RQ9DD.css: 15081 octets, gzip 4073
+Contrôle statique OK : 3 références relatives, 3 images locales, CSP et aucun jeu d’essai embarqué.
+
+$ npm test
+
+> watteau-horizon@0.1.0 test
+> vitest run
+
+
+ RUN  v5.1.2 /workspace/Watteau-horizon
+
+
+ Test Files  5 passed (5)
+      Tests  28 passed (28)
+   Start at  02:29:28
+   Duration  814ms (transform 41%, import 38%, tests 15%, worker 5%)
+
+    Isolate  5 workers spawned · ~90ms startup each (spawn + environment, per file)
+             at least ~362ms faster with isolate: false — reuses workers across files instead of one per file
+
+
+$ Reconstruction et contrôle des empreintes du catalogue et des visuels
+
+> watteau-horizon@0.1.0 catalogue:import
+> node --experimental-strip-types tools/import-catalogue.mjs
+
+{
+  "coverage": {
+    "sourceUrl": "https://data.enseignementsup-recherche.gouv.fr/explore/dataset/fr-esr-cartographie_formations_parcoursup/",
+    "publisher": "Ministère de l'Enseignement supérieur, de la Recherche et de l'Espace",
+    "license": "Licence Ouverte v2.0 (Etalab)",
+    "licenseUrl": "https://www.etalab.gouv.fr/wp-content/uploads/2017/04/ETALAB-Licence-Ouverte-v2.0.pdf",
+    "campaign": "2026",
+    "collectedOn": "2026-11-26",
+    "sourceUpdatedOn": "2026-10-22",
+    "scope": "Sélection d’offres liées au numérique à Valenciennes, Anzin, Aulnoy-lez-Valenciennes et Famars.",
+    "scopeCommunes": [
+      "Valenciennes",
+      "Aulnoy-lez-Valenciennes",
+      "Anzin",
+      "Famars"
+    ],
+    "campaignRows": 25793,
+    "localAllFieldsRows": 129,
+    "inputRows": 16,
+    "acceptedRows": 16,
+    "populatedFields": {
+      "name": 16,
+      "institution": 16,
+      "city": 16,
+      "type": 16,
+      "modality": 3,
+      "durationYears": 0,
+      "officialUrl": 16
+    },
+    "sha256": "2bf812da800888e899cab09131fd99dea67a74f368bb33903b3717a6ca4580ca"
+  },
+  "quarantine": [],
+  "missingFormationCodes": []
+}
+src/data/catalogue.ts: OK
+public/art/antoine-atlas.png: OK
+public/art/antoine-portrait.png: OK
+public/art/campus.webp: OK
+6404a6b64eefb7da4c6876dcefe73451aad34c6d0db6063de406f0bf6eabe2e8  src/data/catalogue.ts
+ea0d5ff7ec4d9e7fb8c7cde588096eb790a50b6375a0dd8710bc1e376bee6139  public/art/antoine-atlas.png
+0182449e064ec78d3e3c96947ea49a573eec8130e4cdffb937b018f96a57e8cd  public/art/antoine-portrait.png
+8cb51042291a2bf69414c01be12cd2c11cc6ce48e1be292828c247cca00e2331  public/art/campus.webp
+
+$ Dimensions, transparence et cycle de l’atlas
+16 poses distinctes RGBA. Appui constant au pixel 63.
+
+$ Validation locale des workflows
+Prévisualisation manuelle après contrôles sur main, droits Pages limités au déploiement.

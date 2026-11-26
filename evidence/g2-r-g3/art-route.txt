@@ -1,0 +1,2 @@
+Promenade du départ au dernier repère. 874 points avec un pas ≤ 1 px.
+Distance minimale aux rectangles selon les axes : 33.5 px. Rayon des pieds : 10 px.
