@@ -25,6 +25,6 @@ npx playwright install chromium ffmpeg
 node tools/engine-trials/benchmark.mjs --video --out quality-results/p3
 ```
 
-Le benchmark exige un nouveau dossier de preuve. `PLAYWRIGHT_CHROMIUM_EXECUTABLE` permet de pointer vers un Chromium installé. La commande de diagnostic `--smoke --case three-desktop` utilise une répétition et trois secondes de mouvement. L’exécution complète utilise les minima du protocole et enregistre séparément les vidéos.
+Le benchmark exige un nouveau dossier de preuve. `PLAYWRIGHT_CHROMIUM_EXECUTABLE` permet de pointer vers un Chromium installé. La commande de diagnostic `--smoke --case three-desktop` utilise une répétition et trois secondes de mouvement. L’exécution complète utilise les minima du protocole et enregistre séparément les vidéos. Pour reprendre cinq démarrages à froid d’un seul cas, utilise `--cold-only --case godot-mobile` dans un nouveau dossier. Le chronomètre de disponibilité s’arrête au premier rendu, puis le relevé réseau attend la fin des requêtes et conserve aussi les observations du serveur local.
 
 Les commandes et résultats détaillés sont dans le [rapport P3](../../docs/production/ENGINE-TRIALS.md). La [grille de décision](decision-matrix.json) maintient la migration en attente. Les notices de licence Three.js, Phaser et Godot sont jointes aux fichiers construits.

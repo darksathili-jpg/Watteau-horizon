@@ -15,6 +15,7 @@ const prefix = '/engine-trials/'
 export async function serveTrials(directory, port = 0) {
   const root = resolve(directory)
   const files = new Map()
+  const sessions = new Map()
   async function collect(folder) {
     for (const entry of await readdir(folder, { withFileTypes: true })) {
       const full = resolve(folder, entry.name)
@@ -33,6 +34,14 @@ export async function serveTrials(directory, port = 0) {
     if (!file || !['GET', 'HEAD'].includes(request.method)) return response.writeHead(404).end()
     const compressed = file.gzip && request.headers['accept-encoding']?.split(',').some((value) => value.trim() === 'gzip')
     const body = compressed ? file.gzip : file.raw
+    const session = request.headers['x-watteau-trial-session']
+    if (typeof session === 'string' && /^[a-f0-9-]{36}$/.test(session)) {
+      if (!sessions.has(session)) sessions.set(session, [])
+      const event = { path: target, method: request.method, declaredBodyBytes: request.method === 'GET' ? body.length : 0, finished: false, closed: false }
+      sessions.get(session).push(event)
+      response.once('finish', () => { event.finished = true })
+      response.once('close', () => { event.closed = true })
+    }
     response.writeHead(200, {
       'Content-Type': file.mime, 'Content-Length': body.length, 'Cache-Control': 'no-store', 'Vary': 'Accept-Encoding',
       'X-Content-Type-Options': 'nosniff', 'Referrer-Policy': 'no-referrer', 'X-Robots-Tag': 'noindex, nofollow',
@@ -46,6 +55,7 @@ export async function serveTrials(directory, port = 0) {
   return {
     url: `http://127.0.0.1:${server.address().port}${prefix}`,
     sizes: Object.fromEntries([...files].map(([url, file]) => [url, { raw: file.raw.length, gzip: file.gzip?.length ?? null, sha256: createHash('sha256').update(file.raw).digest('hex') }])),
+    requests: (session) => (sessions.get(session) ?? []).map((request) => ({ ...request })),
     close: () => new Promise((done) => server.close(done)),
   }
 }

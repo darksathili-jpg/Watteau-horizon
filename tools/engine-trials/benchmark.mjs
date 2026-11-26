@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict'
+import { randomUUID } from 'node:crypto'
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -12,7 +13,7 @@ const root = fileURLToPath(new URL('../../', import.meta.url))
 const experiment = resolve(root, 'experiments/engine-trials')
 const protocol = JSON.parse(await readFile(resolve(root, 'production/engine-protocol.json')))
 const { values } = parseArgs({
-  options: { out: { type: 'string' }, dist: { type: 'string' }, smoke: { type: 'boolean', default: false }, case: { type: 'string' }, video: { type: 'boolean', default: false } },
+  options: { out: { type: 'string' }, dist: { type: 'string' }, smoke: { type: 'boolean', default: false }, case: { type: 'string' }, 'cold-only': { type: 'boolean', default: false }, video: { type: 'boolean', default: false } },
 })
 const out = resolve(values.out ?? `quality-results/engine-trials-${Date.now()}`)
 const dist = resolve(values.dist ?? resolve(experiment, 'dist'))
@@ -26,8 +27,9 @@ const profiles = {
   desktop: { viewport: { width: 1440, height: 960 }, isMobile: false, hasTouch: false },
   mobile: { viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true },
 }
-if (values.case && (!values.smoke || !engines.some((engine) => Object.keys(profiles).some((profile) => values.case === `${engine}-${profile}`)))) {
-  throw new Error('Un cas ciblé exige --smoke et un couple moteur-profil connu.')
+if (values['cold-only'] && (!values.case || values.smoke || values.video)) throw new Error('La reprise à froid exige --case, sans --smoke ni --video.')
+if (values.case && (!(values.smoke || values['cold-only']) || !engines.some((engine) => Object.keys(profiles).some((profile) => values.case === `${engine}-${profile}`)))) {
+  throw new Error('Un cas ciblé exige --smoke ou --cold-only et un couple moteur-profil connu.')
 }
 const noMatch = (engine, profile) => values.case && values.case !== `${engine}-${profile}`
 const storageKey = (engine) => `watteau-engine-trials:v1:${engine}`
@@ -49,22 +51,22 @@ const browser = await chromium.launch({
 })
 const report = {
   schema: 1,
-  label: values.smoke ? 'smoke' : 'preselection-emulated',
+  label: values.smoke ? 'smoke' : values['cold-only'] ? 'preselection-cold-check' : 'preselection-emulated',
   revision: (await git(root, 'rev-parse', 'HEAD')).toString().trim(),
   sceneSha256: sha256(await readFile(resolve(experiment, 'scene.json'))),
   versions: { phaser: '3.90.0', three: '0.187.0', godot: '4.7.2-stable', chromium: browser.version() },
   host: { platform: process.platform, architecture: process.arch, mode: 'Chromium headless, ANGLE/SwiftShader, loopback HTTP gzip, DPR 1' },
   minimumColdRunsPerCombination: probes,
-  requestedMotionSeconds: seconds,
+  requestedMotionSeconds: values['cold-only'] ? null : seconds,
   assets: server.sizes, cases: {},
 }
 const metricsPath = resolve(out, 'measurements.json')
 const checkpoint = () => writeFile(metricsPath, JSON.stringify(report, null, 2) + '\n')
 
-async function freshContext(engine, profile, video = false) {
+async function freshContext(engine, profile, video = false, session) {
   const viewport = profiles[profile].viewport
   const context = await browser.newContext({
-    ...profiles[profile], locale: 'fr-FR', timezoneId: 'Europe/Paris', deviceScaleFactor: 1,
+    ...profiles[profile], ...(session ? { extraHTTPHeaders: { 'X-Watteau-Trial-Session': session } } : {}), locale: 'fr-FR', timezoneId: 'Europe/Paris', deviceScaleFactor: 1,
     reducedMotion: 'no-preference',
     ...(video ? { recordVideo: { dir: resolve(out, 'video-tmp'), size: viewport } } : {}),
   })
@@ -98,19 +100,26 @@ async function ready(page) {
 }
 
 async function cold(engine, profile) {
-  const browserCase = await freshContext(engine, profile)
+  const session = randomUUID()
+  const browserCase = await freshContext(engine, profile, false, session)
   try {
     await browserCase.launch()
     const readyMs = await ready(browserCase.page)
+    await browserCase.page.waitForLoadState('networkidle', { timeout: 12000 })
     const loaded = await Promise.all(browserCase.finished.map(async (request) => {
       const sizes = await request.sizes()
       return { url: new URL(request.url()).pathname, body: sizes.responseBodySize, headers: sizes.responseHeadersSize }
     }))
+    const serverRequests = server.requests(session)
+    const servedBodyBytes = serverRequests.filter((request) => request.finished).reduce((sum, item) => sum + item.declaredBodyBytes, 0)
+    const complete = engine !== 'godot' || loaded.some(({ url, body }) => url.endsWith('/index.wasm') && body > 0)
     return {
-      status: 'measured', readyMs: rounded(readyMs),
-      transferBytes: loaded.reduce((sum, item) => sum + item.body + item.headers, 0),
-      bodyBytes: loaded.reduce((sum, item) => sum + item.body, 0),
-      resources: loaded, errors: [...browserCase.errors], warnings: [...browserCase.warnings],
+      status: complete && !browserCase.errors.length ? 'measured' : 'incomplete',
+      reason: complete ? undefined : 'Le navigateur ne fournit pas de taille complète pour le WASM.',
+      readyMs: rounded(readyMs),
+      transferBytes: complete ? loaded.reduce((sum, item) => sum + item.body + item.headers, 0) : null,
+      bodyBytes: complete ? loaded.reduce((sum, item) => sum + item.body, 0) : null,
+      servedBodyBytes, serverRequests, resources: loaded, errors: [...browserCase.errors], warnings: [...browserCase.warnings],
     }
   } catch (error) {
     return { status: 'failed', reason: error.message, errors: [...browserCase.errors], warnings: [...browserCase.warnings] }
@@ -369,7 +378,7 @@ try {
       medianTransferBytes: quantile(valid.map(({ transferBytes }) => transferBytes), 0.5),
       maxTransferBytes: valid.length ? Math.max(...valid.map(({ transferBytes }) => transferBytes)) : null,
     }
-    if (valid.length === 0) continue
+    if (valid.length === 0 || values['cold-only']) continue
     item.functional = await functional(item.engine, item.profile)
     console.log(`${item.engine} ${item.profile} · parcours ${item.functional.status} · ${item.functional.reason ?? item.functional.checks.length + ' contrôles'}`)
     await checkpoint()
@@ -396,7 +405,7 @@ try {
 }
 
 const failures = Object.values(report.cases).filter((item) => !item.blocked
-  && (item.startup?.measured !== probes || item.functional?.status !== 'passed' || item.motion?.status !== 'measured'
+  && (item.startup?.measured !== probes || (!values['cold-only'] && (item.functional?.status !== 'passed' || item.motion?.status !== 'measured'))
     || (values.video && item.video?.status !== 'recorded')
     || [...item.cold, item.motion, item.video].some((part) => part?.errors.length)))
 const real = engines.filter((engine) => Object.keys(profiles).every((profile) => report.cases[`${engine}-${profile}`]?.functional?.status === 'passed'))
