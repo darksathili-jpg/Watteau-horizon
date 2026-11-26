@@ -1,0 +1,269 @@
+{
+  "reference": "b7c673172ca7102aca6e019668530da16c74f816",
+  "harnessCommit": "fbb01aaff71de51115682961b75e609c377d50bd",
+  "subjectSha256": "35ea87d8e828d337d7f173c950fc0c27891e9f538ed6f27ba4786f7ce5a427a1",
+  "checkoutCleanForBothProfiles": true,
+  "local": {
+    "development": {
+      "automated": "PASS",
+      "studentRelease": "BLOCKED",
+      "exitCode": 0
+    },
+    "studentsWithoutAttestation": {
+      "automated": "PASS",
+      "studentRelease": "BLOCKED",
+      "exitCode": 1
+    },
+    "gates": {
+      "Q1": "PASS",
+      "Q2": "PASS",
+      "Q3": "PASS",
+      "Q4": "PASS",
+      "Q5": "PASS",
+      "Q6": "PASS",
+      "Q7": "PASS",
+      "Q8": "BLOCKED"
+    },
+    "automatedTests": {
+      "vitest": 28,
+      "playwright": "9 scénarios Chromium réussis.",
+      "harness": 6
+    },
+    "visual": {
+      "reference": "b7c673172ca7102aca6e019668530da16c74f816",
+      "browser": "156.0.8078.79",
+      "maximumChangedPixels": 0,
+      "scenarios": [
+        {
+          "id": "campus-desktop",
+          "viewport": {
+            "width": 1440,
+            "height": 960
+          },
+          "dimensions": {
+            "reference": [
+              1440,
+              991
+            ],
+            "candidate": [
+              1440,
+              991
+            ]
+          },
+          "changed": 0,
+          "pixels": 1427040
+        },
+        {
+          "id": "campus-mobile",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "dimensions": {
+            "reference": [
+              390,
+              1377
+            ],
+            "candidate": [
+              390,
+              1377
+            ]
+          },
+          "changed": 0,
+          "pixels": 537030
+        },
+        {
+          "id": "parcours-sans-jeu",
+          "viewport": {
+            "width": 1440,
+            "height": 960
+          },
+          "dimensions": {
+            "reference": [
+              1440,
+              960
+            ],
+            "candidate": [
+              1440,
+              960
+            ]
+          },
+          "changed": 0,
+          "pixels": 1382400
+        },
+        {
+          "id": "comparateur-desktop",
+          "viewport": {
+            "width": 1440,
+            "height": 960
+          },
+          "dimensions": {
+            "reference": [
+              1440,
+              1524
+            ],
+            "candidate": [
+              1440,
+              1524
+            ]
+          },
+          "changed": 0,
+          "pixels": 2194560
+        },
+        {
+          "id": "comparateur-mobile",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "dimensions": {
+            "reference": [
+              390,
+              2693
+            ],
+            "candidate": [
+              390,
+              2693
+            ]
+          },
+          "changed": 0,
+          "pixels": 1050270
+        }
+      ]
+    },
+    "isolatedVisualRegression": {
+      "decision": {
+        "automated": "BLOCKED",
+        "studentRelease": "BLOCKED",
+        "exitCode": 1
+      },
+      "gate": "Q3",
+      "status": "FAIL",
+      "scenarios": [
+        {
+          "id": "campus-desktop",
+          "viewport": {
+            "width": 1440,
+            "height": 960
+          },
+          "dimensions": {
+            "reference": [
+              1440,
+              991
+            ],
+            "candidate": [
+              1440,
+              991
+            ]
+          },
+          "changed": 97649,
+          "pixels": 1427040
+        },
+        {
+          "id": "campus-mobile",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "dimensions": {
+            "reference": [
+              390,
+              1377
+            ],
+            "candidate": [
+              390,
+              1377
+            ]
+          },
+          "changed": 34191,
+          "pixels": 537030
+        },
+        {
+          "id": "parcours-sans-jeu",
+          "viewport": {
+            "width": 1440,
+            "height": 960
+          },
+          "dimensions": {
+            "reference": [
+              1440,
+              960
+            ],
+            "candidate": [
+              1440,
+              960
+            ]
+          },
+          "changed": 97649,
+          "pixels": 1382400
+        },
+        {
+          "id": "comparateur-desktop",
+          "viewport": {
+            "width": 1440,
+            "height": 960
+          },
+          "dimensions": {
+            "reference": [
+              1440,
+              1524
+            ],
+            "candidate": [
+              1440,
+              1524
+            ]
+          },
+          "changed": 96704,
+          "pixels": 2194560
+        },
+        {
+          "id": "comparateur-mobile",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "dimensions": {
+            "reference": [
+              390,
+              2693
+            ],
+            "candidate": [
+              390,
+              2693
+            ]
+          },
+          "changed": 34230,
+          "pixels": 1050270
+        }
+      ]
+    },
+    "budgets": {
+      "playable": 396439,
+      "catalogue": 3915,
+      "limits": {
+        "playableJavaScriptGzipBytes": 460800,
+        "catalogueJavaScriptGzipBytes": 16384
+      },
+      "assets": {
+        "Formations-Ct2EsRjF.js": {
+          "bytes": 55985,
+          "gzipBytes": 3915
+        },
+        "createCampus-Bo0gcn5w.js": {
+          "bytes": 1197786,
+          "gzipBytes": 318621
+        },
+        "index-B0HJibPo.js": {
+          "bytes": 247955,
+          "gzipBytes": 77818
+        }
+      }
+    }
+  },
+  "githubActions": {
+    "url": "https://github.com/darksathili-jpg/Watteau-horizon/actions/runs/45765699303",
+    "headSha": "fbb01aaff71de51115682961b75e609c377d50bd",
+    "conclusion": "success",
+    "artifact": "controles-watteau-horizon"
+  }
+}

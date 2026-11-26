@@ -15,3 +15,13 @@ Le dépôt contenait une recette CI et un workflow Pages manuel. GitHub a depuis
 - Q8 est bloquée. Les droits du visuel définitif, la validation manuelle d’accessibilité, les mesures physiques, la revue de la campagne et des licences, la revue de confidentialité et l’autorisation institutionnelle doivent être attestés pour le commit livré. [Pièces attendues](QUALITY.md#pièces-de-revue)
 - La cartographie Parcoursup 2026 reste le périmètre du comparateur existant. La mise à disposition élèves exige une validation de la campagne effectivement visée. [Registre de provenance](../SOURCES.md#catalogue-parcoursup)
 - L’évaluation 3D est au stade du protocole. Les essais physiques et la sélection d’un moteur restent à réaliser. [Protocole](ENGINE.md)
+
+## Exécution sur le commit du harness
+
+Le commit `fbb01aa` a passé les contrôles GitHub Actions. Le run a archivé les journaux, les captures et les comparaisons sous `controles-watteau-horizon`. [Exécution vérifiée](https://github.com/darksathili-jpg/Watteau-horizon/actions/runs/45765699303)
+
+Deux recettes locales ont utilisé le même checkout propre et Chromium 156.0.8078.79. Les deux ont produit Q1 à Q7 en PASS et Q8 en BLOCKED. Le profil développement est sorti avec le code 0. Le profil élèves sans attestation est sorti avec le code 1, après avoir exécuté les contrôles indépendants. Chaque recette a exécuté 28 tests Vitest, 9 scénarios Chromium et 6 tests propres au harness. npm audit a remonté zéro vulnérabilité. [Résultats structurés](../../evidence/harness-v2/receipt.json) · [Codes de sortie](../../evidence/harness-v2/profiles.txt)
+
+Les cinq scénarios graphiques ont donné 0 pixel modifié sur 6 591 300 pixels comparés. Sur un worktree d’essai, un changement volontaire de couleur du bandeau d’en-tête a déclenché Q3, une sortie 1 et des différences sur les cinq scènes. Le worktree de recette a été retiré après le test. Le contrôle de paquet a rejeté un build normal et accepté un build marqué prévisualisation.
+
+Le JavaScript du jeu représente 396439 octets gzip. Le comparateur représente 3915 octets gzip. L’intervalle p95 d’image de deux passages Chromium locaux a varié entre 16,8 et 50 ms. Ces mesures sur hôte de développement restent distinctes de la recette physique du futur protocole 3D.

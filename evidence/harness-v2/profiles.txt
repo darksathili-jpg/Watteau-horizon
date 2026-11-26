@@ -1,0 +1,2 @@
+Même checkout propre pour les deux profils. Développement : 0. Élèves sans attestation : 1. Q1–Q7 réussies et Q8 bloquée dans les deux rapports.
+Modification volontaire en worktree isolée. Q3 FAIL, sortie 1, différence sur 5 scène(s).
