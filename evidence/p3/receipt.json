@@ -1,0 +1,382 @@
+{
+  "schema": 1,
+  "classification": "preselection-emulated",
+  "baseline": "b7c673172ca7102aca6e019668530da16c74f816",
+  "demonstratorsRevision": "528dd001d237497d32e7cf67633bf7ce9cd79105",
+  "targetedMeasurementRevision": "302f6431b3b0869c06e210ab23b717d3bc210761",
+  "sceneSha256": "bab29b10baa48ef6af181534067345792c761cef79fa16462a8db6f1b52c1001",
+  "versions": {
+    "phaser": "3.90.0",
+    "three": "0.187.0",
+    "godot": "4.7.2-stable",
+    "chromium": "156.0.8078.79"
+  },
+  "host": {
+    "platform": "linux",
+    "architecture": "x64",
+    "mode": "Chromium headless, ANGLE/SwiftShader, loopback HTTP gzip, DPR 1",
+    "webgl": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+  },
+  "requestedMotionSeconds": 60,
+  "results": [
+    {
+      "engine": "phaser",
+      "profile": "desktop",
+      "viewport": {
+        "width": 1440,
+        "height": 960
+      },
+      "coldReady": 5,
+      "initialReadinessMedianMs": 551.7,
+      "completeTransfersInInitialSeries": 5,
+      "completeTransfersInTargetedSeries": null,
+      "confirmedTransferMedianBytes": 327675,
+      "confirmedTransferMaxBytes": 327675,
+      "functionalStatus": "passed",
+      "functionalChecks": [
+        "déplacement et collision du premier bac",
+        "trois repères activés dans l’ordre",
+        "gait neutralisé et caméra directe avec la réduction de mouvement",
+        "reprise du carnet et des trois étapes",
+        "effacement isolé au moteur",
+        "trois étapes équivalentes sans rendu",
+        "aucun écart axe dans le parcours sans jeu testé",
+        "entrée sans jeu sans téléchargement d’un moteur"
+      ],
+      "axeReportedViolations": [],
+      "motionStatus": "measured",
+      "motionObservedSeconds": 60,
+      "completedMotionSegments": 19,
+      "frameCount": 1692,
+      "frameP95Ms": 60.1,
+      "videoStatus": "recorded",
+      "video": "phaser-desktop.webm",
+      "snapshots": [
+        "phaser-desktop-spawn.png",
+        "phaser-desktop-atelier.png"
+      ],
+      "initialColdErrors": [],
+      "otherErrors": [],
+      "labBudgets": {
+        "ready": true,
+        "transfer": true,
+        "frameP95": false
+      }
+    },
+    {
+      "engine": "phaser",
+      "profile": "mobile",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "coldReady": 5,
+      "initialReadinessMedianMs": 443.7,
+      "completeTransfersInInitialSeries": 5,
+      "completeTransfersInTargetedSeries": null,
+      "confirmedTransferMedianBytes": 327675,
+      "confirmedTransferMaxBytes": 327675,
+      "functionalStatus": "passed",
+      "functionalChecks": [
+        "déplacement et collision du premier bac",
+        "trois repères activés dans l’ordre",
+        "gait neutralisé et caméra directe avec la réduction de mouvement",
+        "reprise du carnet et des trois étapes",
+        "effacement isolé au moteur",
+        "trois étapes équivalentes sans rendu",
+        "aucun écart axe dans le parcours sans jeu testé",
+        "entrée sans jeu sans téléchargement d’un moteur"
+      ],
+      "axeReportedViolations": [],
+      "motionStatus": "measured",
+      "motionObservedSeconds": 60,
+      "completedMotionSegments": 20,
+      "frameCount": 3590,
+      "frameP95Ms": 17.1,
+      "videoStatus": "recorded",
+      "video": "phaser-mobile.webm",
+      "snapshots": [
+        "phaser-mobile-spawn.png",
+        "phaser-mobile-atelier.png"
+      ],
+      "initialColdErrors": [],
+      "otherErrors": [],
+      "labBudgets": {
+        "ready": true,
+        "transfer": true,
+        "frameP95": true
+      }
+    },
+    {
+      "engine": "three",
+      "profile": "desktop",
+      "viewport": {
+        "width": 1440,
+        "height": 960
+      },
+      "coldReady": 5,
+      "initialReadinessMedianMs": 515,
+      "completeTransfersInInitialSeries": 5,
+      "completeTransfersInTargetedSeries": null,
+      "confirmedTransferMedianBytes": 143515,
+      "confirmedTransferMaxBytes": 143515,
+      "functionalStatus": "passed",
+      "functionalChecks": [
+        "déplacement et collision du premier bac",
+        "trois repères activés dans l’ordre",
+        "gait neutralisé et caméra directe avec la réduction de mouvement",
+        "reprise du carnet et des trois étapes",
+        "effacement isolé au moteur",
+        "trois étapes équivalentes sans rendu",
+        "aucun écart axe dans le parcours sans jeu testé",
+        "entrée sans jeu sans téléchargement d’un moteur"
+      ],
+      "axeReportedViolations": [],
+      "motionStatus": "measured",
+      "motionObservedSeconds": 59.8,
+      "completedMotionSegments": 8,
+      "frameCount": 534,
+      "frameP95Ms": 214.7,
+      "videoStatus": "recorded",
+      "video": "three-desktop.webm",
+      "snapshots": [
+        "three-desktop-spawn.png",
+        "three-desktop-atelier.png"
+      ],
+      "initialColdErrors": [],
+      "otherErrors": [],
+      "labBudgets": {
+        "ready": true,
+        "transfer": true,
+        "frameP95": false
+      }
+    },
+    {
+      "engine": "three",
+      "profile": "mobile",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "coldReady": 5,
+      "initialReadinessMedianMs": 395.7,
+      "completeTransfersInInitialSeries": 5,
+      "completeTransfersInTargetedSeries": null,
+      "confirmedTransferMedianBytes": 143515,
+      "confirmedTransferMaxBytes": 143515,
+      "functionalStatus": "passed",
+      "functionalChecks": [
+        "déplacement et collision du premier bac",
+        "trois repères activés dans l’ordre",
+        "gait neutralisé et caméra directe avec la réduction de mouvement",
+        "reprise du carnet et des trois étapes",
+        "effacement isolé au moteur",
+        "trois étapes équivalentes sans rendu",
+        "aucun écart axe dans le parcours sans jeu testé",
+        "entrée sans jeu sans téléchargement d’un moteur"
+      ],
+      "axeReportedViolations": [],
+      "motionStatus": "measured",
+      "motionObservedSeconds": 59.92,
+      "completedMotionSegments": 18,
+      "frameCount": 1771,
+      "frameP95Ms": 64.7,
+      "videoStatus": "recorded",
+      "video": "three-mobile.webm",
+      "snapshots": [
+        "three-mobile-spawn.png",
+        "three-mobile-atelier.png"
+      ],
+      "initialColdErrors": [],
+      "otherErrors": [],
+      "labBudgets": {
+        "ready": true,
+        "transfer": true,
+        "frameP95": false
+      }
+    },
+    {
+      "engine": "godot",
+      "profile": "desktop",
+      "viewport": {
+        "width": 1440,
+        "height": 960
+      },
+      "coldReady": 5,
+      "initialReadinessMedianMs": 2390.9,
+      "completeTransfersInInitialSeries": 5,
+      "completeTransfersInTargetedSeries": null,
+      "confirmedTransferMedianBytes": 10300040,
+      "confirmedTransferMaxBytes": 10300040,
+      "functionalStatus": "passed",
+      "functionalChecks": [
+        "déplacement et collision du premier bac",
+        "trois repères activés dans l’ordre",
+        "gait neutralisé et caméra directe avec la réduction de mouvement",
+        "reprise du carnet et des trois étapes",
+        "effacement isolé au moteur",
+        "trois étapes équivalentes sans rendu",
+        "aucun écart axe dans le parcours sans jeu testé",
+        "entrée sans jeu sans téléchargement d’un moteur"
+      ],
+      "axeReportedViolations": [],
+      "motionStatus": "measured",
+      "motionObservedSeconds": 60.71,
+      "completedMotionSegments": 5,
+      "frameCount": 346,
+      "frameP95Ms": 228.3,
+      "videoStatus": "recorded",
+      "video": "godot-desktop.webm",
+      "snapshots": [
+        "godot-desktop-spawn.png",
+        "godot-desktop-atelier.png"
+      ],
+      "initialColdErrors": [],
+      "otherErrors": [],
+      "labBudgets": {
+        "ready": true,
+        "transfer": false,
+        "frameP95": false
+      }
+    },
+    {
+      "engine": "godot",
+      "profile": "mobile",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "coldReady": 5,
+      "initialReadinessMedianMs": 1982.7,
+      "completeTransfersInInitialSeries": 2,
+      "completeTransfersInTargetedSeries": 5,
+      "confirmedTransferMedianBytes": 10300040,
+      "confirmedTransferMaxBytes": 10300040,
+      "functionalStatus": "passed",
+      "functionalChecks": [
+        "déplacement et collision du premier bac",
+        "trois repères activés dans l’ordre",
+        "gait neutralisé et caméra directe avec la réduction de mouvement",
+        "reprise du carnet et des trois étapes",
+        "effacement isolé au moteur",
+        "trois étapes équivalentes sans rendu",
+        "aucun écart axe dans le parcours sans jeu testé",
+        "entrée sans jeu sans téléchargement d’un moteur"
+      ],
+      "axeReportedViolations": [],
+      "motionStatus": "measured",
+      "motionObservedSeconds": 60.24,
+      "completedMotionSegments": 15,
+      "frameCount": 1129,
+      "frameP95Ms": 79,
+      "videoStatus": "recorded",
+      "video": "godot-mobile.webm",
+      "snapshots": [
+        "godot-mobile-spawn.png",
+        "godot-mobile-atelier.png"
+      ],
+      "initialColdErrors": [
+        {
+          "type": "network",
+          "url": "/engine-trials/godot/index.wasm",
+          "message": "net::ERR_ABORTED"
+        },
+        {
+          "type": "network",
+          "url": "/engine-trials/godot/index.wasm",
+          "message": "net::ERR_ABORTED"
+        },
+        {
+          "type": "network",
+          "url": "/engine-trials/godot/index.wasm",
+          "message": "net::ERR_ABORTED"
+        }
+      ],
+      "otherErrors": [
+        {
+          "type": "network",
+          "url": "/engine-trials/godot/index.wasm",
+          "message": "net::ERR_ABORTED"
+        }
+      ],
+      "labBudgets": {
+        "ready": true,
+        "transfer": false,
+        "frameP95": false
+      }
+    }
+  ],
+  "targetedGodotMobileCold": {
+    "complete": 5,
+    "runs": [
+      {
+        "status": "measured",
+        "readyMs": 4383.8,
+        "transferBytes": 10300040,
+        "servedBodyBytes": 10297043,
+        "errors": []
+      },
+      {
+        "status": "measured",
+        "readyMs": 2190,
+        "transferBytes": 10300040,
+        "servedBodyBytes": 10297043,
+        "errors": []
+      },
+      {
+        "status": "measured",
+        "readyMs": 2131.4,
+        "transferBytes": 10300040,
+        "servedBodyBytes": 10297043,
+        "errors": []
+      },
+      {
+        "status": "measured",
+        "readyMs": 2108.9,
+        "transferBytes": 10300040,
+        "servedBodyBytes": 10297043,
+        "errors": []
+      },
+      {
+        "status": "measured",
+        "readyMs": 2444.4,
+        "transferBytes": 10300040,
+        "servedBodyBytes": 10297043,
+        "errors": []
+      }
+    ]
+  },
+  "githubActions": "https://github.com/darksathili-jpg/Watteau-horizon/actions/runs/45814885732",
+  "harness": {
+    "Q1": "PASS",
+    "Q2": "PASS",
+    "Q3": "PASS",
+    "Q4": "PASS",
+    "Q5": "PASS",
+    "Q6": "PASS",
+    "Q7": "PASS",
+    "Q8": "BLOCKED"
+  },
+  "physicalQualification": "pending",
+  "engineDecision": "deferred",
+  "productionEngine": "phaser-canvas",
+  "targetedGodotMobileMotion": {
+    "revision": "c65943ed93afe6be40edf72da7888c9feb153c3b",
+    "status": "measured",
+    "observedSeconds": 60.22,
+    "completedSegments": 15,
+    "frameCount": 1068,
+    "medianMs": 62.95,
+    "p95Ms": 82.8,
+    "maxMs": 145.1,
+    "over50ms": 612,
+    "series": "godot-mobile-frames.json",
+    "errors": [],
+    "warnings": []
+  },
+  "campaignExitCode": 1,
+  "targetedColdExitCode": 0,
+  "targetedMotionExitCode": 0,
+  "sameBuiltAssetsAcrossAllSeries": true,
+  "rendererFallbackSimulation": "passed"
+}

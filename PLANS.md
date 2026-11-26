@@ -14,7 +14,7 @@ Statuts : TODO, IN_PROGRESS, BLOCKED, VERIFIED. VERIFIED exige preuves et résul
 | G2-ART | Campus fictif, caméra et interactions | VERIFIED | [Audit graphique](docs/ART-REVIEW.md), captures sur ordinateur et mobile émulé, tests de déplacement et de collisions |
 | G3 | Catalogue et comparateur | VERIFIED | Extrait Parcoursup 2026 de 16 offres dans quatre communes. [Import reproductible et provenance](docs/SOURCES.md#catalogue-parcoursup) |
 | Harness V2 | Guardians, Q1 à Q8, comparaison graphique et protocole moteur | VERIFIED | [Audit et résultats](docs/production/AUDIT.md). Q1 à Q7 réussies. Q8 bloquée pour la diffusion élèves |
-| P3 | Démonstrateurs comparés et protocole 3D | IN_PROGRESS | [Campagne et grille](docs/production/ENGINE-TRIALS.md). Sélection liée aux essais physiques et au contrat graphique |
+| P3 | Démonstrateurs comparés et protocole 3D | VERIFIED | [Campagne Chromium, captures et grille](docs/production/ENGINE-TRIALS.md). Sélection différée jusqu’aux essais physiques et au contrat graphique |
 | G4 | Extension | TODO | Missions validées, tests de régression |
 | G5 | Recette | TODO | Audit et autorisation de publication |
 
