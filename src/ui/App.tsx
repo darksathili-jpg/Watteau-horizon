@@ -133,6 +133,7 @@ export function App() {
   return (
     <div className="app" data-reduced-motion={reduceMotion}>
       <a className="skip-link" href="#main">Aller au contenu</a>
+      {import.meta.env.VITE_WATTEAU_PREVIEW === '1' && <div className="preview-banner">Prévisualisation de développement · Campus fictif</div>}
       <header className="site-header">
         <div className="site-width header-inner">
           <button className="identity" onClick={() => navigate('explorer')}>

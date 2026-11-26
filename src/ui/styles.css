@@ -380,3 +380,5 @@ legend { padding: 0; line-height: 1.45; font-weight: 620; }
   .scene-action { font-size: .78rem; padding-inline: .48rem; }
   .page-footer { flex-wrap: wrap; }
 }
+
+.preview-banner { padding: .4rem 1rem; text-align: center; background: #3b2c39; color: #ffe0d4; font-size: .85rem; font-weight: 650; }
