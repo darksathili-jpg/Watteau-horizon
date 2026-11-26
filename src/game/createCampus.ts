@@ -1,7 +1,7 @@
 import Phaser from 'phaser'
 import type { StageId } from '../domain/mission'
 import { antoineAtlas, campusArt } from './art'
-import { facing, movement, nearbyStation, size, stations, walk } from './campus'
+import { cameraTarget, cameraZoom, facing, interpolateCamera, movement, nearbyStation, size, stationAt, stations, walk, walkingPace } from './campus'
 import type { Direction, Position } from './campus'
 
 export interface CampusOptions {
@@ -10,20 +10,29 @@ export interface CampusOptions {
   directions: Set<Direction>
   getProgress: () => readonly StageId[]
   getReducedMotion: () => boolean
+  getOverview: () => boolean
   onPosition: (position: Position) => void
   onSettled: () => void
   onNearby: (stage: StageId | null) => void
-  onFrame: (delta: number, spriteFrame: string) => void
+  onFrame: (delta: number, spriteFrame: string, zoom: number, camera: Position) => void
   onReady: () => void
   onError: () => void
 }
 
 const atlasRows: readonly Direction[] = ['down', 'left', 'right', 'up']
 
-export function createCampus(options: CampusOptions): () => void {
+export interface CampusController {
+  pickStation: (viewportPosition: Position) => StageId | null
+  destroy: () => void
+}
+
+export function createCampus(options: CampusOptions): CampusController {
   let position = { ...options.initialPosition }
   let direction: Direction = 'down'
   let wasMoving = false
+  let heldMs = 0
+  let pickStation: CampusController['pickStation'] = () => null
+  let viewportWidth = options.host.clientWidth
   let nearby: StageId | null = null
   let previousProgress: readonly StageId[] | undefined
 
@@ -33,6 +42,8 @@ export function createCampus(options: CampusOptions): () => void {
     private markers?: Phaser.GameObjects.Graphics
     private labels: Phaser.GameObjects.Text[] = []
     private failed = false
+    private cameraCenter: Position = { x: size.width / 2, y: size.height / 2 }
+    private previousZoom = 0
 
     preload() {
       this.load.on(Phaser.Loader.Events.FILE_LOAD_ERROR, () => {
@@ -47,7 +58,7 @@ export function createCampus(options: CampusOptions): () => void {
       if (this.failed) return
       this.add.image(0, 0, 'campus').setOrigin(0)
       this.markers = this.add.graphics()
-      this.labels = stations.map((station) => this.add.text(station.x, station.y - 31, station.label, {
+      this.labels = stations.map((station, index) => this.add.text(station.x, station.y - 32, `${index + 1}  ${station.label}`, {
         fontFamily: 'system-ui, sans-serif',
         fontSize: '16px',
         fontStyle: 'bold',
@@ -67,8 +78,11 @@ export function createCampus(options: CampusOptions): () => void {
           repeat: -1,
         })
       })
-      this.paintMarkers()
       this.refreshNearby()
+      this.paintMarkers()
+      this.updateCamera(0)
+      const camera = this.cameras.main
+      pickStation = (point) => stationAt(camera.getWorldPoint(point.x, point.y))
       const canvas = this.game.canvas
       canvas.setAttribute('aria-hidden', 'true')
       options.onReady()
@@ -79,7 +93,10 @@ export function createCampus(options: CampusOptions): () => void {
       this.paintMarkers()
 
       const vector = movement(options.directions)
-      const next = walk(position, vector, delta)
+      heldMs = vector.x !== 0 || vector.y !== 0 ? Math.min(145, heldMs + delta) : 0
+      const reduced = options.getReducedMotion()
+      const pace = reduced ? 1 : walkingPace(heldMs)
+      const next = walk(position, vector, delta, pace)
       const moving = next.x !== position.x || next.y !== position.y
       if (moving) {
         position = next
@@ -90,14 +107,34 @@ export function createCampus(options: CampusOptions): () => void {
         this.refreshNearby()
       }
 
-      if (moving && !options.getReducedMotion()) {
+      if (moving && !reduced) {
         this.player.play(direction, true)
+        this.player.anims.timeScale = pace
       } else {
         this.player.stop().setFrame(atlasRows.indexOf(direction) * 4)
       }
-      options.onFrame(delta, String(this.player.frame.name))
+      this.updateCamera(delta)
+      options.onFrame(delta, String(this.player.frame.name), this.previousZoom, this.cameraCenter)
       if (wasMoving && !moving) options.onSettled()
       wasMoving = moving
+    }
+
+    private updateCamera(delta: number) {
+      const zoom = cameraZoom(viewportWidth, options.getReducedMotion() || options.getOverview())
+      const target = cameraTarget(position, zoom)
+      const camera = this.cameras.main
+      if (zoom !== this.previousZoom) {
+        camera.setZoom(zoom)
+        this.cameraCenter = target
+        this.previousZoom = zoom
+      } else if (zoom !== 1) {
+        this.cameraCenter = interpolateCamera(this.cameraCenter, target, delta)
+      }
+      camera.centerOn(this.cameraCenter.x, this.cameraCenter.y)
+      for (const label of this.labels) {
+        label.setVisible(Math.abs(label.x - this.cameraCenter.x) + label.width / 2 + 4 < size.width / (2 * zoom)
+          && Math.abs(label.y - this.cameraCenter.y) + label.height / 2 + 4 < size.height / (2 * zoom))
+      }
     }
 
     private refreshNearby() {
@@ -116,6 +153,10 @@ export function createCampus(options: CampusOptions): () => void {
         const active = index === progress.length
         const reached = index < progress.length
         const color = active ? 0xffad91 : reached ? 0x83ddbb : 0x94a6ca
+        if (active) {
+          this.markers?.fillStyle(0xffad91, 0.16).fillEllipse(station.x, station.y, 67, 40)
+          this.markers?.lineStyle(1, 0xffad91, 0.66).strokeEllipse(station.x, station.y, 67, 40)
+        }
         this.markers?.fillStyle(0x101826, 0.9).fillCircle(station.x, station.y, active ? 15 : 11)
         this.markers?.lineStyle(active ? 3 : 2, color, 1).strokeCircle(station.x, station.y, active ? 15 : 11)
         this.markers?.fillStyle(color, 1).fillCircle(station.x, station.y, active ? 5 : 3)
@@ -137,5 +178,15 @@ export function createCampus(options: CampusOptions): () => void {
     scene: CampusScene,
   })
 
-  return () => game.destroy(true)
+  const resize = new ResizeObserver(([entry]) => {
+    if (entry) viewportWidth = entry.contentRect.width
+  })
+  resize.observe(options.host)
+  return {
+    pickStation: (point) => pickStation(point),
+    destroy: () => {
+      resize.disconnect()
+      game.destroy(true)
+    },
+  }
 }

@@ -9,6 +9,7 @@ const resources = [...html.matchAll(/(?:src|href)="([^"]+)"/g)].map((match) => m
 assert.match(html, /lang="fr"/)
 assert.match(html, /default-src 'self'/)
 assert.match(html, /form-action 'none'/)
+assert.match(html, /name="robots" content="noindex, nofollow"/)
 assert.match(html, /name="referrer" content="no-referrer"/)
 assert.ok(!html.includes('%BASE_URL%'))
 

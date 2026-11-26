@@ -382,3 +382,57 @@ legend { padding: 0; line-height: 1.45; font-weight: 620; }
 }
 
 .preview-banner { padding: .4rem 1rem; text-align: center; background: #3b2c39; color: #ffe0d4; font-size: .85rem; font-weight: 650; }
+
+.destination-heading { color: var(--muted); font-size: .8rem; }
+.destination-heading span { color: var(--accent-strong); font-weight: 750; }
+.overview-button {
+  min-height: 38px;
+  margin-inline-start: auto;
+  padding: .3rem .55rem;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: #182333;
+  color: #e5edf8;
+  font-size: .81rem;
+  white-space: nowrap;
+}
+.overview-button:hover { background: #28374b; }
+.overview-button[aria-pressed="true"] { border-color: #a37a77; color: var(--accent-strong); background: #292635; }
+.overview-button:disabled { cursor: default; }
+@media (pointer: coarse), (max-width: 760px) {
+  .scene-help { gap: .4rem; }
+  .overview-button { min-height: 44px; }
+  .scene-tag { top: auto; bottom: .56rem; }
+}
+
+.catalogue { display: grid; gap: 1rem; }
+.catalogue-intro { display: grid; grid-template-columns: 1.45fr 1fr; align-items: start; gap: 1.25rem; }
+.catalogue-source { border: 1px solid var(--line); background: var(--panel-inner); border-radius: 9px; padding: .7rem .85rem; }
+.catalogue-source summary, .provenance summary { cursor: pointer; font-weight: 670; }
+.catalogue-source p { margin-top: .5rem; font-size: .86rem; }
+.comparison-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: stretch; }
+.comparison-card label { display: block; margin: .8rem 0 .33rem; color: var(--muted); font-size: .9rem; font-weight: 650; }
+.comparison-card select {
+  display: block;
+  width: 100%;
+  min-height: 46px;
+  padding: .55rem .65rem;
+  border: 1px solid #526077;
+  border-radius: 8px;
+  background: #101827;
+  color: #fbfaff;
+  font: inherit;
+  text-overflow: ellipsis;
+}
+.comparison-card select:focus-visible, summary:focus-visible { outline: 3px solid #ffc1aa; outline-offset: 4px; }
+.comparison-fields { display: grid; gap: 0; margin: 1rem 0; }
+.comparison-fields > div { padding: .5rem 0; border-bottom: 1px solid var(--line); }
+.comparison-fields dt, .provenance dt { color: var(--muted); font-size: .84rem; font-weight: 650; }
+.comparison-fields dd, .provenance dd { margin: 0; overflow-wrap: anywhere; }
+.provenance { margin-top: .85rem; }
+.provenance dl { display: grid; gap: .55rem; margin: .65rem 0 0; }
+.provenance dd { color: var(--muted); font-size: .84rem; }
+.catalogue-questions .criteria-list { margin: .8rem 0 1rem; }
+@media (max-width: 760px) {
+  .catalogue-intro, .comparison-grid { grid-template-columns: minmax(0, 1fr); }
+}

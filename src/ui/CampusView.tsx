@@ -1,14 +1,22 @@
 import { useEffect, useRef, useState } from 'react'
-import type { KeyboardEvent, PointerEvent } from 'react'
+import type { KeyboardEvent, MouseEvent, PointerEvent } from 'react'
 import type { Stage, StageId } from '../domain/mission'
-import { stations } from '../game/campus'
-import type { Direction, Position } from '../game/campus'
+import { headingTo, size, stations } from '../game/campus'
+import type { CampusController } from '../game/createCampus'
+import type { Direction, Heading, Position } from '../game/campus'
 import { campusArt } from '../game/art'
 import { Icon } from './icons'
 
 const arrowKeys = new Map<string, Direction>([
   ['ArrowUp', 'up'], ['ArrowLeft', 'left'], ['ArrowDown', 'down'], ['ArrowRight', 'right'],
 ])
+const physicalKeys = new Map<string, Direction>([
+  ['KeyW', 'up'], ['KeyA', 'left'], ['KeyS', 'down'], ['KeyD', 'right'],
+])
+const headingSymbols = {
+  nord: '↑', 'nord-est': '↗', est: '→', 'sud-est': '↘', sud: '↓',
+  'sud-ouest': '↙', ouest: '←', 'nord-ouest': '↖',
+} as const
 const controls = [
   { direction: 'up', symbol: '↑', label: 'Avancer vers le haut' },
   { direction: 'left', symbol: '←', label: 'Avancer vers la gauche' },
@@ -31,40 +39,53 @@ export function CampusView(props: Props) {
   const host = useRef<HTMLDivElement>(null)
   const input = useRef<HTMLDivElement>(null)
   const active = useRef(new Set<Direction>())
+  const game = useRef<CampusController>(null)
   const initialPosition = useRef(props.position)
+  const player = useRef(props.position)
   const current = useRef(props)
   current.current = props
   const [status, setStatus] = useState<'loading' | 'ready' | 'error'>('loading')
   const [nearby, setNearby] = useState<StageId | null>(null)
+  const [overview, setOverview] = useState(false)
+  const overviewRef = useRef(false)
+  overviewRef.current = overview
+  const [direction, setDirection] = useState<Heading | null>(null)
 
   useEffect(() => {
     const parent = host.current
     const region = input.current
     if (!parent || !region) return
     let cancelled = false
-    let destroy: (() => void) | undefined
+    let controller: CampusController | undefined
     const directions = active.current
     let frames = 0
     let elapsed = 0
 
     void import('../game/createCampus').then(({ createCampus }) => {
       if (cancelled) return
-      destroy = createCampus({
+      controller = createCampus({
         host: parent,
         initialPosition: initialPosition.current,
         directions,
         getProgress: () => current.current.completed,
         getReducedMotion: () => current.current.reduceMotion,
+        getOverview: () => overviewRef.current,
         onPosition: (position) => {
           region.dataset.position = `${position.x.toFixed(1)},${position.y.toFixed(1)}`
+          player.current = position
+          const destination = stations.find(({ id }) => id === current.current.next?.id)
+          if (destination) setDirection(headingTo(position, destination))
           current.current.onPosition(position)
         },
         onSettled: () => current.current.onSettled(),
         onNearby: setNearby,
         onReady: () => setStatus('ready'),
         onError: () => setStatus('error'),
-        onFrame: (delta, spriteFrame) => {
+        onFrame: (delta, spriteFrame, zoom, camera) => {
           if (region.dataset.spriteFrame !== spriteFrame) region.dataset.spriteFrame = spriteFrame
+          if (region.dataset.cameraZoom !== String(zoom)) region.dataset.cameraZoom = String(zoom)
+          const center = `${camera.x.toFixed(1)},${camera.y.toFixed(1)}`
+          if (region.dataset.cameraCenter !== center) region.dataset.cameraCenter = center
           frames += 1
           elapsed += delta
           if (frames % 60 === 0 && elapsed > 0) {
@@ -72,6 +93,7 @@ export function CampusView(props: Props) {
           }
         },
       })
+      game.current = controller
     }).catch(() => {
       if (!cancelled) setStatus('error')
     })
@@ -86,7 +108,8 @@ export function CampusView(props: Props) {
     return () => {
       cancelled = true
       directions.clear()
-      destroy?.()
+      controller?.destroy()
+      game.current = null
       window.removeEventListener('blur', pause)
       window.removeEventListener('pagehide', pause)
       document.removeEventListener('visibilitychange', pause)
@@ -97,10 +120,24 @@ export function CampusView(props: Props) {
   const canInteract = status === 'ready' && stage !== undefined && nearby === stage.id
   const destination = stations.find(({ id }) => id === stage?.id)
   const location = stations.find(({ id }) => id === nearby)
+  const heading = destination ? (direction ?? headingTo(player.current, destination)) : undefined
+
+  useEffect(() => {
+    setDirection(destination ? headingTo(player.current, destination) : null)
+  }, [destination])
+
+  function sceneClick(event: MouseEvent<HTMLDivElement>) {
+    const zone = event.currentTarget
+    zone.focus()
+    if (!canInteract || !stage || !game.current) return
+    const rect = zone.getBoundingClientRect()
+    const point = { x: (event.clientX - rect.left) * size.width / rect.width, y: (event.clientY - rect.top) * size.height / rect.height }
+    if (game.current.pickStation(point) === stage.id) props.onOpen(stage, zone)
+  }
 
   function keyDown(event: KeyboardEvent<HTMLElement>) {
     if (event.target !== event.currentTarget || status !== 'ready') return
-    const key = arrowKeys.get(event.key)
+    const key = arrowKeys.get(event.key) ?? physicalKeys.get(event.code)
     if (key) {
       event.preventDefault()
       active.current.add(key)
@@ -113,7 +150,7 @@ export function CampusView(props: Props) {
   }
 
   function keyUp(event: KeyboardEvent<HTMLElement>) {
-    const key = arrowKeys.get(event.key)
+    const key = arrowKeys.get(event.key) ?? physicalKeys.get(event.code)
     if (key) active.current.delete(key)
   }
 
@@ -139,7 +176,7 @@ export function CampusView(props: Props) {
           onKeyDown={keyDown}
           onKeyUp={keyUp}
           onBlur={() => active.current.clear()}
-          onClick={(event) => event.currentTarget.focus()}
+          onClick={sceneClick}
         >
           <div className="scene-canvas" ref={host} />
           <div className="scene-tag"><Icon name="pin" size={15} /> Campus provisoire</div>
@@ -150,6 +187,7 @@ export function CampusView(props: Props) {
           <div>
             <span className="micro-label">{canInteract ? 'Sur place' : 'Destination'}</span>
             <strong>{destination?.label ?? 'Mission terminée'}</strong>
+            {!canInteract && heading && <span className="destination-heading"><span aria-hidden="true">{headingSymbols[heading]}</span> {heading}</span>}
           </div>
           {stage && <button
             type="button"
@@ -166,6 +204,7 @@ export function CampusView(props: Props) {
         <span className="keyboard-help"><Icon name="keyboard" size={21} /> <span><kbd>↑</kbd> <kbd>←</kbd> <kbd>↓</kbd> <kbd>→</kbd> se déplacer <span className="help-divider">·</span> <kbd>Entrée</kbd> interagir</span></span>
         <span className="touch-help">Maintiens une flèche pour avancer.</span>
         <span className="nearby-label">{location ? `Près de ${location.label}` : 'Cour du campus'}</span>
+        <button type="button" className="overview-button" aria-pressed={overview || props.reduceMotion} disabled={status !== 'ready' || props.reduceMotion} onClick={() => setOverview((shown) => !shown)}>Vue d’ensemble</button>
       </div>
       <div className="direction-pad" aria-label="Commandes de déplacement">
         {controls.map(({ direction, symbol, label }) => <button

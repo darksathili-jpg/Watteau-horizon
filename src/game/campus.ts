@@ -55,8 +55,8 @@ export function walkable({ x, y }: Position): boolean {
     ))
 }
 
-export function walk(position: Position, vector: Position, deltaMs: number): Position {
-  const distance = speed * Math.min(Math.max(deltaMs, 0), 50) / 1000
+export function walk(position: Position, vector: Position, deltaMs: number, pace = 1): Position {
+  const distance = speed * Math.min(Math.max(deltaMs, 0), 50) / 1000 * pace
   const next = { x: Math.min(bounds.right, Math.max(bounds.left, position.x + vector.x * distance)), y: position.y }
   if (!walkable(next)) next.x = position.x
   next.y = Math.min(bounds.bottom, Math.max(bounds.top, position.y + vector.y * distance))
@@ -66,4 +66,46 @@ export function walk(position: Position, vector: Position, deltaMs: number): Pos
 
 export function nearbyStation(position: Position): StageId | null {
   return stations.find((station) => Math.hypot(position.x - station.x, position.y - station.y) <= interactionRadius)?.id ?? null
+}
+
+const headings = ['est', 'sud-est', 'sud', 'sud-ouest', 'ouest', 'nord-ouest', 'nord', 'nord-est'] as const
+export type Heading = (typeof headings)[number]
+
+export function headingTo(position: Position, destination: Position): Heading {
+  const angle = Math.atan2(destination.y - position.y, destination.x - position.x)
+  const sector = Math.round(angle / (Math.PI / 4))
+  return headings[(sector + headings.length) % headings.length]!
+}
+
+export function walkingPace(heldMs: number): number {
+  return 0.52 + 0.48 * Math.min(1, Math.max(0, heldMs) / 145)
+}
+
+export function cameraZoom(viewWidth: number, fixed: boolean): number {
+  if (fixed) return 1
+  return viewWidth < 560 ? 1.64 : 1.2
+}
+
+export function cameraTarget(player: Position, zoom: number): Position {
+  const halfWidth = size.width / (2 * zoom)
+  const halfHeight = size.height / (2 * zoom)
+  return {
+    x: Math.max(halfWidth, Math.min(size.width - halfWidth, player.x)),
+    y: Math.max(halfHeight, Math.min(size.height - halfHeight, player.y - halfHeight * 0.46)),
+  }
+}
+
+export function interpolateCamera(current: Position, target: Position, deltaMs: number): Position {
+  const blend = 1 - Math.exp(-Math.max(0, deltaMs) / 105)
+  return {
+    x: Math.abs(target.x - current.x) < 0.08 ? target.x : current.x + (target.x - current.x) * blend,
+    y: Math.abs(target.y - current.y) < 0.08 ? target.y : current.y + (target.y - current.y) * blend,
+  }
+}
+
+export function stationAt(position: Position): StageId | null {
+  return stations.find((station) => (
+    Math.abs(position.x - station.x) <= 53
+    && position.y >= station.y - 49 && position.y <= station.y + 19
+  ))?.id ?? null
 }

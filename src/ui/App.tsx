@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react'
 import { completeStage, stages } from '../domain/mission'
 import type { Stage } from '../domain/mission'
 import type { Position } from '../game/campus'
@@ -6,8 +6,10 @@ import { eraseSave, exportSave, freshSave, readSave, writeSave } from '../persis
 import type { Mode, Save } from '../persistence/save'
 import { CampusView } from './CampusView'
 import { Antoine, MissionSummary, Modal, StageDialog } from './Mission'
-import { Formations, Notebook } from './Notebook'
+import { Notebook } from './Notebook'
 import { Icon } from './icons'
+
+const Formations = lazy(() => import('./Formations'))
 
 const tabs = [
   { id: 'explorer', label: 'Explorer', heading: 'Le campus', icon: 'compass' },
@@ -194,7 +196,7 @@ export function App() {
           onErase={(trigger) => setDialog({ type: 'erase', trigger })}
           onCompare={() => navigate('formations')}
         />}
-        {page === 'formations' && <Formations />}
+        {page === 'formations' && <Suspense fallback={<p role="status">Chargement des formations…</p>}><Formations /></Suspense>}
         <footer className="page-footer">
           <span>Prototype d’orientation · Campus fictif</span>
           <button type="button" className="motion-control" aria-pressed={reduceMotion} onClick={() => change((current) => ({ ...current, reduceMotion: !reduceMotion }))}>

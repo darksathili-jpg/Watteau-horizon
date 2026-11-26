@@ -89,6 +89,8 @@ async function finishWithMouse(page: Page, answer: string) {
 test('termine la mission en jeu au clavier et reprend position et progression', async ({ cleanPage: page }) => {
   await page.goto(route)
   const scene = await ready(page)
+  const banner = page.getByText('Prévisualisation de développement · Campus fictif')
+  await expect(banner).toHaveCount(process.env.WATTEAU_EXPECT_PREVIEW === '1' ? 1 : 0)
   await capture(page, '01-campus-desktop')
   await focusViaTab(page, scene)
   await expect(scene).toBeFocused()
@@ -194,7 +196,7 @@ test('propose les mêmes étapes sans jeu, puis enregistre, exporte et efface le
   await expect(note).toHaveValue('')
   expect(await page.evaluate((key) => localStorage.getItem(key), storageKey)).toBeNull()
   await page.getByRole('button', { name: 'Voir les formations' }).click()
-  await expect(page.getByText('Comparateur indisponible')).toBeVisible()
+  await expect(page.getByRole('heading', { name: 'Deux formations à mettre côte à côte' })).toBeVisible()
   await expect(page.getByRole('link', { name: 'Consulter Parcoursup' })).toHaveAttribute('href', 'https://www.parcoursup.gouv.fr/')
 })
 
@@ -280,6 +282,7 @@ test('respecte les préférences système et passe axe sur les vues et le dialog
   await page.getByRole('button', { name: 'Carnet', exact: true }).click()
   await audit('Carnet')
   await page.getByRole('button', { name: 'Formations', exact: true }).click()
+  await expect(page.getByRole('heading', { name: 'Deux formations à mettre côte à côte' })).toBeVisible()
   await audit('Formations')
 })
 
@@ -289,6 +292,8 @@ test.describe('Mobile tactile', () => {
   test('affiche le campus sur mobile et accepte les commandes tactiles', async ({ cleanPage: page, context }) => {
     await page.goto(route)
     const scene = await ready(page)
+    const navigationToReadyMs = Math.round(await page.evaluate(() => performance.now()))
+    await expect(scene).toHaveAttribute('data-camera-zoom', '1.64')
     await expect(page.getByText('Campus provisoire', { exact: true })).toBeVisible()
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(390)
     await capture(page, '05-campus-mobile')
@@ -305,7 +310,90 @@ test.describe('Mobile tactile', () => {
     }
     await page.getByRole('button', { name: 'Ouvrir l’étape' }).tap()
     await expect(page.getByRole('dialog').getByRole('heading', { name: 'Comprendre le besoin' })).toBeVisible()
+    await expect(scene).toHaveAttribute('data-fps', /^\d+$/)
+    const mobileSample = {
+      viewport: page.viewportSize(),
+      mode: 'Chromium headless, mobile tactile émulé, localhost',
+      navigationToReadyMs,
+      observedPhaserFps: Number(await scene.getAttribute('data-fps')),
+    }
+    expect(mobileSample.observedPhaserFps).toBeGreaterThan(0)
+    console.log(JSON.stringify(mobileSample))
+    if (evidence) await writeFile(join(evidence, 'performance-mobile.json'), JSON.stringify(mobileSample, null, 2) + '\n')
   })
+})
+
+test('cadre Antoine, bascule en vue fixe et ouvre seulement le repère proche', async ({ cleanPage: page }) => {
+  await page.goto(route)
+  const scene = await ready(page)
+  await expect(scene).toHaveAttribute('data-camera-zoom', '1.2')
+  const initial = await position(scene)
+  const overview = page.getByRole('button', { name: 'Vue d’ensemble' })
+  await overview.click()
+  await expect(scene).toHaveAttribute('data-camera-zoom', '1')
+  await expect(scene).toHaveAttribute('data-camera-center', '480.0,270.0')
+  expect(await position(scene)).toEqual(initial)
+  await capture(page, '06-campus-vue-ensemble')
+  await overview.click()
+  await expect(scene).toHaveAttribute('data-camera-zoom', '1.2')
+
+  async function clickKiosk() {
+    const box = await scene.boundingBox()
+    const zoom = Number(await scene.getAttribute('data-camera-zoom'))
+    const [x, y] = (await scene.getAttribute('data-camera-center') ?? '').split(',').map(Number)
+    if (!box || x === undefined || y === undefined) throw new Error('Repère hors du cadre.')
+    await page.mouse.click(box.x + box.width * (0.5 + (180 - x) * zoom / 960), box.y + box.height * (0.5 + (278 - y) * zoom / 540))
+  }
+
+  await clickKiosk()
+  await expect(page.getByRole('dialog')).toHaveCount(0)
+  await expect(scene).toBeFocused()
+  const center = await scene.getAttribute('data-camera-center')
+  await move(page, scene, 'ArrowUp', ([, y]) => y < 290)
+  await expect(scene).not.toHaveAttribute('data-camera-center', center!)
+  await expect(page.getByRole('button', { name: 'Ouvrir l’étape' })).toBeEnabled()
+  await clickKiosk()
+  await expect(page.getByRole('dialog').getByRole('heading', { name: 'Comprendre le besoin' })).toBeVisible()
+  await page.keyboard.press('Escape')
+  await expect(scene).toBeFocused()
+
+  await page.getByRole('button', { name: 'Réduire les animations' }).click()
+  await expect(scene).toHaveAttribute('data-camera-zoom', '1')
+  await expect(scene).toHaveAttribute('data-camera-center', '480.0,270.0')
+})
+
+test('compare deux fiches officielles, expose leur provenance et indique les données manquantes', async ({ cleanPage: page }) => {
+  await page.goto(route)
+  await page.getByRole('button', { name: 'Formations', exact: true }).click()
+  await expect(page.getByText('Parcoursup · campagne 2026')).toBeVisible()
+  await expect(page.getByText(/16 offres dans cet extrait/)).toBeVisible()
+  await expect(page.getByRole('link', { name: 'Cartographie Parcoursup' })).toHaveAttribute('href', /^https:\/\/data\.enseignementsup-recherche\.gouv\.fr\//)
+  const first = page.getByLabel('Choisir la formation A')
+  const second = page.getByLabel('Choisir la formation B')
+  await expect(first.locator('option')).toHaveCount(17)
+  await first.selectOption({ index: 1 })
+  const selected = await first.inputValue()
+  await expect(second.locator('option').nth(1)).toBeDisabled()
+  await second.selectOption({ index: 2 })
+  expect(await second.inputValue()).not.toBe(selected)
+  await expect(page.getByText('2 sur 2 formations sélectionnées.')).toHaveCount(1)
+  const cards = page.getByRole('region', { name: /^Formation [AB]$/ })
+  for (const card of await cards.all()) {
+    const duration = card.locator('.comparison-fields > div').filter({ hasText: 'Durée indicative' })
+    await expect(duration.getByText('Durée indicative')).toBeVisible()
+    await expect(duration.getByText('Non renseigné par la source')).toBeVisible()
+    await expect(card.getByRole('link', { name: 'Voir la fiche Parcoursup' })).toHaveAttribute('href', /^https:\/\/dossierappel\.parcoursup\.fr\//)
+  }
+  await capture(page, '07-comparateur-desktop')
+  await cards.first().getByText('Provenance par champ').click()
+  await expect(cards.first().getByText(/collecte du 26 novembre 2026/).first()).toBeVisible()
+  await expect(cards.first().getByText(/Durée absente du schéma/)).toBeVisible()
+  const result = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze()
+  expect(result.violations).toEqual([])
+  await cards.first().getByText('Provenance par champ').click()
+  await page.setViewportSize({ width: 390, height: 844 })
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(390)
+  await capture(page, '08-comparateur-mobile')
 })
 
 test('mesure le coût des modes sans jeu et jeu sur le build statique', async ({ cleanPage: page, browser }) => {
@@ -321,6 +409,30 @@ test('mesure le coût des modes sans jeu et jeu sur le build statique', async ({
   const timeToReadyMs = Math.round(await page.evaluate(() => performance.now()) - start)
   await expect(scene).toHaveAttribute('data-fps', /^\d+$/, { timeout: 10000 })
   const fps = Number(await scene.getAttribute('data-fps'))
+  await scene.focus()
+  await page.keyboard.down('ArrowUp')
+  let animation: { frames: number; medianMs: number; p95Ms: number; maxMs: number; framesOver32Ms: number }
+  try {
+    animation = await page.evaluate(async () => {
+      const samples: number[] = []
+      let previous = await new Promise<number>(requestAnimationFrame)
+      for (let index = 0; index < 90; index += 1) {
+        const now = await new Promise<number>(requestAnimationFrame)
+        samples.push(now - previous)
+        previous = now
+      }
+      const sorted = samples.sort((left, right) => left - right)
+      return {
+        frames: samples.length,
+        medianMs: Math.round(sorted[44]! * 10) / 10,
+        p95Ms: Math.round(sorted[85]! * 10) / 10,
+        maxMs: Math.round(sorted.at(-1)! * 10) / 10,
+        framesOver32Ms: samples.filter((value) => value > 32).length,
+      }
+    })
+  } finally {
+    await page.keyboard.up('ArrowUp')
+  }
   const sample = {
     browser: browser.version(),
     platform: process.platform,
@@ -328,6 +440,7 @@ test('mesure le coût des modes sans jeu et jeu sur le build statique', async ({
     mode: 'Chromium headless, localhost, cache froid au démarrage',
     timeToReadyMs,
     observedPhaserFps: fps,
+    animation,
     resourcesAfter: await page.evaluate(() => performance.getEntriesByType('resource').map((entry) => {
       const resource = entry as PerformanceResourceTiming
       return { path: new URL(resource.name).pathname, decodedBytes: resource.decodedBodySize }

@@ -56,17 +56,3 @@ export function Notebook({ save, onSave, onExport, onErase, onCompare }: Props) 
     </section>
   </div>
 }
-
-export function Formations() {
-  return <section className="panel content-panel formations-panel" aria-labelledby="compare-title">
-    <div className="section-label"><Icon name="info" size={17} /> Comparateur indisponible</div>
-    <h2 id="compare-title">Deux formations à mettre côte à côte</h2>
-    <p>Le catalogue officiel est en cours de vérification. Pour préparer ta comparaison, choisis deux formations et note les questions que tu veux poser.</p>
-    <ul className="criteria-list">
-      <li>Quels cours et projets vais-je pratiquer ?</li>
-      <li>Quel trajet, quel budget et quel rythme me conviendraient ?</li>
-      <li>Quelles poursuites d’études pourrai-je explorer ?</li>
-    </ul>
-    <a className="button" href="https://www.parcoursup.gouv.fr/" rel="noreferrer">Consulter Parcoursup</a>
-  </section>
-}

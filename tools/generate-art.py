@@ -19,6 +19,8 @@ def campus():
     draw = ImageDraw.Draw(scene)
     glow = Image.new("RGBA", scene.size)
     lights = ImageDraw.Draw(glow)
+    ground_glow = Image.new("RGBA", scene.size)
+    reflections = ImageDraw.Draw(ground_glow)
 
     def polygon(points, color):
         draw.polygon(points, fill=color)
@@ -32,46 +34,72 @@ def campus():
     def ellipse(box, color):
         draw.ellipse(box, fill=color)
 
-    for y in range(height):
-        if y < 90:
-            fraction = y / 90
-            sky = (int(18 + 24 * fraction), int(23 + 28 * fraction), int(42 + 30 * fraction))
-            line([(0, y), (width, y)], sky)
-        else:
-            fraction = (y - 90) / 180
-            stone = (int(24 + 5 * fraction), int(38 + 6 * fraction), int(54 + 12 * fraction))
-            line([(0, y), (width, y)], stone)
+    for y in range(108):
+        fraction = y / 107
+        color = (int(19 + 62 * fraction), int(29 + 37 * fraction), int(53 + 29 * fraction))
+        line([(0, y), (width, y)], color)
+    for y in range(108, height):
+        fraction = (y - 108) / 162
+        color = (int(37 - 13 * fraction), int(53 - 15 * fraction), int(66 - 11 * fraction))
+        line([(0, y), (width, y)], color)
 
-    # Urban skyline and thin clouds.
+    # Horizon glow falls behind the layered roof lines.
+    ellipse((359, 7, 369, 17), "#d9a9a3")
+    ellipse((362, 6, 370, 14), "#26334e")
+    for left, altitude, right in [(0, 38, 24), (36, 34, 58), (102, 34, 114), (120, 43, 150),
+                                  (154, 29, 168), (176, 31, 182), (182, 36, 194), (205, 29, 232),
+                                  (263, 24, 272), (282, 32, 294), (311, 30, 351), (361, 32, 399),
+                                  (407, 28, 436), (442, 33, 452), (464, 24, 479)]:
+        rectangle((left, altitude, right, 67), "#48465e")
     for left, altitude, right in [(5, 33, 39), (43, 28, 76), (79, 34, 104), (109, 22, 126),
                                   (133, 39, 167), (171, 31, 203), (209, 36, 232), (243, 28, 269),
                                   (277, 36, 299), (302, 24, 320), (324, 35, 355), (358, 32, 379),
                                   (385, 36, 416), (423, 29, 451), (458, 20, 476)]:
-        rectangle((left, altitude, right, 68), "#29394e")
-        line([(left, altitude), (right, altitude)], "#344359")
+        rectangle((left, altitude, right, 68), "#303b54")
+        line([(left, altitude), (right, altitude)], "#46506a")
         for x in range(left + 3, right - 1, 5):
             for y in range(altitude + 5, 51, 6):
-                color = rng.choice(["#29394e", "#29394e", "#384559", "#485468", "#69545b"])
+                color = rng.choice(["#303b54", "#303b54", "#41495f", "#585166", "#845e70"])
                 rectangle((x, y, x + 1, y + 1), color)
     for x, y, length in [(9, 13, 45), (19, 17, 20), (69, 12, 21), (132, 8, 41), (175, 17, 32),
-                         (234, 12, 27), (281, 17, 23), (340, 9, 60), (383, 13, 20), (421, 7, 32)]:
-        line([(x, y), (x + length, y)], rng.choice(["#30394e", "#35364f", "#383852", "#44405a"]))
+                         (234, 12, 27), (281, 17, 23), (340, 23, 42), (383, 13, 20), (421, 7, 32)]:
+        line([(x, y), (x + length, y)], rng.choice(["#353c58", "#3c425c", "#4b4862"]))
+        line([(x + 7, y + 1), (x + length - 4, y + 1)], "#373c58")
 
-    # Broad paved courtyard and two intersecting walks.
-    polygon([(0, 127), (480, 112), (480, 157), (0, 174)], "#293b50")
-    polygon([(0, 176), (480, 121), (480, 151), (0, 211)], "#304458")
-    polygon([(142, 104), (179, 104), (349, 269), (267, 269)], "#35495c")
-    polygon([(0, 220), (480, 179), (480, 221), (0, 264)], "#304359")
-    for x in range(-90, 570, 21):
-        line([(x, 105), (x + 109, 269)], "#27374d")
-    for y in range(111, 290, 13):
-        line([(0, y), (479, y - 34)], "#26374a")
-        line([(0, y + 1), (479, y - 33)], "#39495a")
-    for _ in range(660):
+    # The pale brick route strings the station pads together around the planters.
+    promenade = [(45, 259), (51, 236), (60, 218), (74, 176), (90, 139), (130, 133),
+                 (203, 130), (244, 130), (261, 145), (279, 190), (321, 196), (366, 192),
+                 (403, 185), (450, 205), (479, 231)]
+    polygon([(0, 107), (480, 94), (480, 115), (0, 130)], "#303e53")
+    polygon([(0, 244), (480, 222), (480, 247), (0, 272)], "#2b3b50")
+    draw.line(promenade, fill="#5e6776", width=24, joint="curve")
+    draw.line(promenade, fill="#485967", width=20, joint="curve")
+    draw.line(promenade, fill="#52616e", width=2, joint="curve")
+    for x in range(-74, 570, 26):
+        line([(x, 105), (x + 82, 269)], "#293b4d")
+    for y in range(105, 308, 16):
+        line([(0, y), (479, y - 28)], "#2b4052")
+    for _ in range(420):
         x = rng.randrange(width)
-        y = rng.randrange(103, height)
-        dot = rng.choice(["#3d4b59", "#39495a", "#304157", "#435060", "#29384b"])
-        line([(x, y), (x + rng.randrange(1, 4), y)], dot)
+        y = rng.randrange(109, height)
+        ink = scene.getpixel((x, y))
+        shade = rng.choice([-5, -3, 5, 7])
+        line([(x, y), (x + rng.randrange(1, 3), y)], tuple(channel + shade for channel in ink))
+
+    for x, y, hue, reach in [(90, 138, "#e0977a6e", 26), (243, 130, "#8de5ce6b", 24),
+                               (402, 185, "#b2a4f466", 26), (60, 216, "#f4aa8064", 21)]:
+        reflections.ellipse((x - reach, y - 9, x + reach, y + 13), fill=hue)
+    for x, y, hue in [(80, 108, "#dd98695b"), (243, 109, "#72cbcb62"), (405, 105, "#a291da72")]:
+        reflections.polygon([(x - 16, y - 2), (x + 15, y - 2), (x + 31, y + 20),
+                             (x - 34, y + 26)], fill=hue)
+    soft_reflections = ground_glow.filter(ImageFilter.GaussianBlur(8))
+    scene.paste(soft_reflections, mask=soft_reflections.getchannel("A"))
+    for x, y, tint in [(65, 203, "#88777b"), (74, 176, "#88777b"), (82, 157, "#8b797f"),
+                       (112, 136, "#807782"), (155, 132, "#6c8287"), (192, 131, "#6c8287"),
+                       (220, 130, "#6c8287"), (263, 150, "#6c8287"), (272, 177, "#6c8287"),
+                       (301, 193, "#77768a"), (342, 194, "#77768a"), (380, 190, "#77768a"),
+                       (426, 195, "#77768a")]:
+        polygon([(x - 3, y), (x, y - 2), (x + 3, y), (x, y + 2)], tint)
 
     # A low stone curb and roofline keep the walking area visually distinct.
     polygon([(0, 99), (479, 86), (479, 103), (0, 117)], "#253044")
@@ -86,12 +114,14 @@ def campus():
                  (x + w + depth, y + h - depth // 2), (x + w, y + h)], side)
         rectangle((x, y, x + w, y + h), front)
         line([(x, y), (x + w, y), (x + w + depth, y - depth // 2)], trim, 2)
+        line([(x + depth, y - depth // 2), (x + w + depth, y - depth // 2)], "#9a7788")
         line([(x + 2, y + h - 5), (x + w, y + h - 5)], "#24394c", 2)
         line([(x + w, y + 2), (x + w, y + h)], "#233145", 2)
         line([(x + 2, y + h), (x + w, y + h), (x + w + depth, y + h - depth // 2)], "#172537")
         for by in range(y + 7, y + h - 3, 8):
             line([(x + 2, by), (x + w - 1, by)], "#394657")
             line([(x + w + 1, by), (x + w + depth - 1, by - depth // 2)], "#293b4e")
+        light_values = ["#304153", "#3d5369", "#70bdb5", "#df9c78"]
         for r in range(floors):
             for c in range(bays):
                 wx = x + 7 + c * ((w - 10) // bays)
@@ -102,8 +132,10 @@ def campus():
                     continue
                 rectangle((wx - 2, wy - 2, wx + ww + 2, wy + wh + 2), "#263747")
                 lit = rng.choice([0, 1, 1, 2, 3])
-                colors = ["#293a50", "#35506a", "#629ca1", "#d8957d"]
-                rectangle((wx, wy, wx + ww, wy + wh), colors[lit])
+                rectangle((wx, wy, wx + ww, wy + wh), light_values[lit])
+                if lit >= 2:
+                    polygon([(wx, wy + 1), (wx + ww, wy + 1), (wx + ww, wy + 2),
+                             (wx, wy + wh - 1)], "#9ccbc3" if lit == 2 else "#f0b786")
                 line([(wx + ww // 2, wy), (wx + ww // 2, wy + wh)], "#24384c")
                 line([(wx, wy + wh // 2), (wx + ww, wy + wh // 2)], "#2e4253")
                 line([(wx - 1, wy + wh + 2), (wx + ww + 2, wy + wh + 2)], "#556375")
@@ -118,15 +150,38 @@ def campus():
             rectangle((vent_x, yy, vent_x + 11, yy + 2), "#25354a")
         line([(x + 2, y + 3), (x + w - 2, y + 3)], "#526174")
 
-    facade(2, 43, 101, 57, 17, ("#3b4b62", "#2b3b52", "#35465b"), "#65727f", 7, 3)
-    facade(87, 61, 114, 41, 16, ("#465164", "#293b4f", "#3c485b"), "#76818a", 7, 2)
-    facade(204, 32, 123, 72, 22, ("#45536a", "#2a3a50", "#3a465b"), "#78808e", 7, 3)
-    facade(323, 48, 92, 51, 15, ("#3a4a61", "#2a3b4c", "#34465b"), "#647581", 5, 2)
-    facade(413, 57, 67, 46, 14, ("#405065", "#283a4e", "#37495f"), "#717989", 5, 2)
+    facade(2, 43, 101, 57, 17, ("#43536a", "#2b3b52", "#37475d"), "#718095", 7, 3)
+    facade(87, 61, 114, 41, 16, ("#4c5b71", "#293b4f", "#42495d"), "#818899", 7, 2)
+    facade(204, 32, 123, 72, 22, ("#4d6073", "#2a3a50", "#3b4c60"), "#8693a1", 7, 3)
+    facade(323, 48, 92, 51, 15, ("#45566d", "#2a3b4c", "#394a60"), "#708298", 5, 2)
+    facade(413, 57, 67, 46, 14, ("#475a71", "#283a4e", "#384b61"), "#79839b", 5, 2)
+
+    # Distinct architectural silhouettes and material breaks above the promenade.
+    for x, y in [(32, 42), (297, 30), (351, 46)]:
+        line([(x, y), (x, y - 19)], "#617183")
+        line([(x - 4, y - 14), (x + 4, y - 14)], "#786b82")
+        rectangle((x, y - 20, x + 1, y - 19), "#d48b83")
+    for x in range(213, 326, 13):
+        line([(x, 33), (x, 97)], "#4f6173")
+    polygon([(261, 28), (267, 22), (284, 22), (280, 29)], "#5b727e")
+    rectangle((261, 27, 280, 30), "#34495d")
+
+    # Glass extensions mark three inventive, fictional campus destinations.
+    for x, y, half_width, rim, glazing in [(79, 75, 31, "#a47178", "#4e5867"),
+                                           (243, 74, 29, "#559686", "#27606a"),
+                                           (405, 75, 27, "#8b78b4", "#4f5b77")]:
+        left, right = x - half_width, x + half_width
+        polygon([(left, y), (left + 9, y - 7), (right + 3, y - 7), (right, y)], rim)
+        rectangle((left, y, right, y + 20), "#263a50")
+        rectangle((left + 3, y + 3, right - 3, y + 17), glazing)
+        polygon([(left + 7, y + 3), (left + 14, y + 3), (left + 8, y + 17),
+                 (left + 5, y + 17)], rim)
+        for pane in range(left + 5, right, 11):
+            line([(pane, y + 3), (pane, y + 18)], "#293e50")
 
     # Three entrances give the courtyard an intentional focal rhythm.
-    for x, y, left, right, color in [(79, 96, 51, 113, "#69bdba"), (243, 99, 213, 276, "#8bcaca"),
-                                      (405, 95, 380, 435, "#dc907f")]:
+    for x, y, left, right, color in [(79, 96, 51, 113, "#e6a28b"), (243, 99, 213, 276, "#89d9be"),
+                                      (405, 95, 380, 435, "#c5b4f3")]:
         polygon([(left, y + 3), (right, y + 3), (right + 8, y + 9), (left - 8, y + 9)], "#526073")
         polygon([(left - 8, y + 9), (right + 8, y + 9), (right + 9, y + 12),
                  (left - 9, y + 12)], "#26374b")
@@ -137,34 +192,40 @@ def campus():
         rectangle((x - 8, y - 15, x + 8, y - 2), "#2a5762")
         line([(x, y - 15), (x, y + 1)], "#172c3c", 2)
         line([(left + 5, y - 21), (right - 4, y - 21)], color, 2)
-        line([(left + 5, y - 20), (right - 4, y - 20)], "#a4b6be")
-        lights.rectangle((left + 6, y - 22, right - 4, y - 19), fill=f"{color}99")
+        line([(left + 7, y - 20), (right - 6, y - 20)], "#9da7b6")
+        lights.rectangle((left + 6, y - 22, right - 4, y - 19), fill=f"{color}cc")
 
     def mark_tile(x, y, color):
-        polygon([(x - 19, y - 2), (x - 10, y - 9), (x + 12, y - 9), (x + 19, y - 2),
-                 (x + 12, y + 7), (x - 10, y + 7)], "#40576a")
-        line([(x - 19, y - 2), (x - 10, y - 9), (x + 12, y - 9), (x + 19, y - 2),
-              (x + 12, y + 7), (x - 10, y + 7), (x - 19, y - 2)], color)
-        line([(x - 10, y + 3), (x + 12, y + 3)], "#536979")
+        polygon([(x - 19, y - 2), (x - 10, y - 9), (x + 11, y - 9), (x + 19, y - 2),
+                 (x + 12, y + 8), (x - 10, y + 8)], "#364c60")
+        line([(x - 19, y - 2), (x - 10, y - 9), (x + 11, y - 9), (x + 19, y - 2),
+              (x + 12, y + 8), (x - 10, y + 8), (x - 19, y - 2)], color)
+        line([(x - 8, y + 5), (x + 8, y + 5)], color)
 
-    for x, y, color in [(90, 139, "#567881"), (244, 129.5, "#577981"), (402.5, 185, "#846b77")]:
-        mark_tile(round(x), round(y), color)
+    for x, y, color in [(90, 139, "#bf8d88"), (244, 130, "#7ea8a1"), (403, 185, "#a595c2")]:
+        mark_tile(x, y, color)
 
     def planter(left, top, right, bottom):
-        ellipse((left - 1, top + 5, right + 9, bottom + 6), "#1d2b3f")
+        polygon([(left + 6, bottom - 14), (right - 4, bottom - 12), (right + 21, bottom + 2),
+                 (right + 13, bottom + 7), (left + 12, bottom + 5)], "#213245")
+        ellipse((left - 1, top + 5, right + 9, bottom + 5), "#243648")
         polygon([(left + 5, top + 4), (right - 5, top + 4), (right, top + 10),
                  (right, bottom - 4), (right - 7, bottom), (left + 5, bottom),
-                 (left, bottom - 5), (left, top + 10)], "#31465b")
+                 (left, bottom - 5), (left, top + 10)], "#405264")
+        polygon([(right, top + 10), (right, bottom - 4), (right - 7, bottom),
+                 (right - 5, bottom - 9)], "#293e50")
         polygon([(left + 5, top), (right - 6, top), (right, top + 7), (right - 5, bottom - 8),
-                 (left + 5, bottom - 8), (left, top + 7)], "#577483")
+                 (left + 5, bottom - 8), (left, top + 7)], "#68818a")
         polygon([(left + 6, top + 3), (right - 9, top + 3), (right - 4, top + 8),
                  (right - 8, bottom - 11), (left + 6, bottom - 11), (left + 4, top + 8)],
                 "#263c42")
-        line([(left + 5, bottom - 8), (right - 5, bottom - 8)], "#7895a0")
+        line([(left + 5, bottom - 8), (right - 5, bottom - 8)], "#90a2a5")
+        for x in range(left + 9, right - 9, 14):
+            line([(x, bottom - 7), (x, bottom - 1)], "#36475c")
         for _ in range(64):
             x = rng.randrange(left + 7, right - 5)
             y = rng.randrange(top + 5, bottom - 11)
-            leaf = rng.choice(["#2b5554", "#386564", "#4c7972", "#39675f", "#6e9283"])
+            leaf = rng.choice(["#2b5554", "#386564", "#51877d", "#39675f", "#7a9d83"])
             ellipse((x - 2, y - 2, x + 2, y + 1), leaf)
         for i in range(4):
             x = left + 9 + i * ((right - left - 16) // 4)
@@ -218,24 +279,28 @@ def campus():
     line([(0, 260), (479, 252)], "#24344a", 2)
     line([(0, 267), (479, 259)], "#2b3a4e")
 
-    scene = Image.alpha_composite(scene.convert("RGBA"), glow.filter(ImageFilter.GaussianBlur(6)))
+    scene = Image.alpha_composite(scene.convert("RGBA"), glow.filter(ImageFilter.GaussianBlur(5)))
+    edge_shade = Image.new("L", scene.size, 96)
+    ImageDraw.Draw(edge_shade).ellipse((-128, -105, 607, 332), fill=0)
+    scene = Image.composite(Image.new("RGBA", scene.size, "#11172b"), scene,
+                            edge_shade.filter(ImageFilter.GaussianBlur(28)))
     return scene.convert("RGB").resize((960, 540), NEAREST)
 
 
-OUTLINE = "#202537"
+OUTLINE = "#1b2234"
 SKIN = "#c98971"
 SKIN_LIGHT = "#e3aa87"
 SKIN_SHADE = "#a76860"
 HAIR = "#372a37"
 HAIR_LIGHT = "#5c3c43"
-CREAM = "#dedddd"
+CREAM = "#eae3e1"
 CREAM_LIGHT = "#f5eeeb"
 CREAM_SHADE = "#a8b0bc"
-BURGUNDY = "#874559"
-BURGUNDY_LIGHT = "#bb6876"
-BURGUNDY_SHADE = "#58364f"
-PACK = "#4d5062"
-PACK_LIGHT = "#767c88"
+BURGUNDY = "#964a60"
+BURGUNDY_LIGHT = "#d1838b"
+BURGUNDY_SHADE = "#633852"
+PACK = "#48596b"
+PACK_LIGHT = "#8aa1aa"
 PANTS = "#42506b"
 PANTS_SHADE = "#2e3a55"
 
@@ -245,7 +310,7 @@ def sprite(direction, phase):
     image = Image.new("RGBA", (20, 32))
     draw = ImageDraw.Draw(image)
     bob = (0, -1, 0, -1)[phase]
-    offsets = ((0, 0), (-1, 1), (0, -1), (1, -1))[phase]
+    offsets = ((0, 0), (-2, 1), (0, -1), (1, -2))[phase]
 
     def rect(box, color):
         draw.rectangle(box, fill=color)
@@ -262,47 +327,60 @@ def sprite(direction, phase):
 
     if direction in ("down", "up"):
         for x, foot_offset in [(5, offsets[0]), (11, offsets[1])]:
-            rect((x, 22 + bob, x + 4, 29 + min(foot_offset, 0)), OUTLINE)
-            rect((x + 1, 23 + bob, x + 3, 28 + min(foot_offset, 0)), PANTS)
-            rect((x, 29 + min(foot_offset, 0), x + 4, 31 + min(foot_offset, 0)), OUTLINE)
-            rect((x + 1, 30 + min(foot_offset, 0), x + 3, 30 + min(foot_offset, 0)), CREAM)
+            sole = 31 + min(foot_offset, 0)
+            rect((x, 22 + bob, x + 4, sole), OUTLINE)
+            rect((x + 1, 23 + bob, x + 3, sole - 3), PANTS)
+            rect((x + 1, 24 + bob, x + 1, sole - 3), "#65718a")
+            rect((x + 1, sole - 2, x + 3, sole - 1), CREAM)
     else:
-        back, front = 8 - offsets[0], 10 - offsets[1]
-        for z, shade in [(back, PANTS_SHADE), (front, PANTS)]:
-            poly([(7, 22 + bob), (12, 22 + bob), (z + 2, 29), (z - 1, 29)], OUTLINE)
-            poly([(8, 23 + bob), (11, 23 + bob), (z + 1, 28), (z, 28)], shade)
-            rect((z - 2, 29, z + 2, 31), OUTLINE)
-            rect((z - 2, 30, z + 1, 30), CREAM_SHADE if shade == PANTS_SHADE else CREAM)
+        for z, step, shade in [(9, offsets[0], PANTS_SHADE), (10, offsets[1], PANTS)]:
+            x = z + step
+            sole = 31 + min(step, 0)
+            poly([(7, 22 + bob), (12, 22 + bob), (x + 2, sole - 2),
+                  (x - 1, sole - 2)], OUTLINE)
+            poly([(8, 23 + bob), (11, 23 + bob), (x + 1, sole - 3), (x, sole - 3)], shade)
+            rect((x - 3, sole - 2, x + 2, sole), OUTLINE)
+            rect((x - 3, sole - 1, x + 1, sole - 1), CREAM_SHADE if shade == PANTS_SHADE else CREAM)
 
     if direction in ("down", "up"):
-        head([(5, 13), (14, 13), (17, 16), (17, 23), (14, 25), (5, 25), (3, 22),
-              (3, 16)], OUTLINE)
-        upper((4, 17, 6, 22), CREAM_SHADE)
-        upper((14, 17, 16, 22), CREAM_SHADE)
-        upper((4, 22, 5, 23), SKIN_SHADE)
-        upper((15, 22, 16, 23), SKIN_SHADE)
+        head([(5, 13), (14, 13), (17, 16), (17, 24), (14, 25), (5, 25), (2, 23),
+              (2, 17)], OUTLINE)
+        left_sleeve = 21 - offsets[1]
+        right_sleeve = 21 - offsets[0]
+        upper((3, 17, 6, left_sleeve), CREAM_SHADE)
+        upper((14, 17, 16, right_sleeve), CREAM_SHADE)
+        upper((3, 17, 4, left_sleeve - 1), CREAM)
+        upper((15, 18, 15, right_sleeve - 1), CREAM)
+        upper((4, left_sleeve, 5, left_sleeve + 1), SKIN)
+        upper((15, right_sleeve, 16, right_sleeve + 1), SKIN)
         upper((6, 14, 13, 23), BURGUNDY_SHADE)
         upper((6, 16, 13, 21), BURGUNDY)
         upper((6, 15, 7, 22), BURGUNDY_LIGHT)
+        upper((13, 18, 13, 21), BURGUNDY_LIGHT)
         if direction == "down":
             head([(8, 14), (11, 14), (12, 16), (11, 21), (8, 21), (8, 17)], CREAM)
             upper((9, 15, 10, 16), CREAM_LIGHT)
-            upper((12, 15, 12, 20), PACK)
+            upper((12, 15, 12, 20), OUTLINE)
+            upper((12, 16, 12, 17), PACK_LIGHT)
         else:
-            upper((6, 15, 13, 20), OUTLINE)
-            upper((7, 15, 12, 19), PACK)
-            upper((8, 16, 11, 16), PACK_LIGHT)
-            upper((8, 19, 11, 19), "#585c70")
+            upper((6, 15, 13, 23), OUTLINE)
+            upper((7, 15, 12, 21), PACK)
+            upper((8, 16, 11, 17), PACK_LIGHT)
+            upper((8, 19, 11, 21), "#667889")
+            upper((10, 20, 10, 20), CREAM_SHADE)
     else:
-        head([(7, 13), (12, 13), (15, 16), (16, 21), (14, 25), (6, 25), (5, 22),
+        head([(7, 13), (12, 13), (16, 16), (17, 21), (14, 25), (6, 25), (4, 22),
               (5, 17)], OUTLINE)
-        upper((7, 14, 12, 22), BURGUNDY)
-        upper((7, 15, 8, 19), BURGUNDY_LIGHT)
-        upper((10, 15, 12, 20), CREAM_SHADE)
-        upper((10, 21, 11, 22), SKIN)
-        upper((13, 16, 15, 22), OUTLINE)
-        upper((13, 17, 14, 21), PACK)
-        upper((14, 17, 14, 19), PACK_LIGHT)
+        upper((6, 14, 12, 23), BURGUNDY)
+        upper((6, 16, 7, 21), BURGUNDY_LIGHT)
+        upper((6, 14, 10, 15), CREAM)
+        upper((13, 16, 16, 22), PACK)
+        upper((14, 17, 15, 19), PACK_LIGHT)
+        upper((15, 20, 16, 21), "#628092")
+        arm = offsets[0]
+        head([(10, 15), (12, 16), (10 + arm, 22), (8 + arm, 22), (8, 17)], CREAM_SHADE)
+        head([(9, 16), (10, 17), (8 + arm, 21), (7 + arm, 21)], CREAM)
+        upper((8 + arm, 22, 9 + arm, 22), SKIN)
 
     if direction == "down":
         head([(7, 3), (12, 3), (15, 5), (16, 10), (13, 14), (7, 14), (4, 11),
@@ -318,6 +396,7 @@ def sprite(direction, phase):
               (13, 7), (11, 6), (8, 8), (6, 7)], HAIR)
         upper((8, 4, 9, 5), HAIR_LIGHT)
         upper((12, 5, 13, 5), HAIR_LIGHT)
+        upper((6, 6, 6, 6), HAIR_LIGHT)
     elif direction == "up":
         head([(7, 3), (12, 3), (15, 5), (16, 10), (14, 13), (11, 14), (7, 13), (4, 11),
               (4, 6)], OUTLINE)
@@ -325,6 +404,7 @@ def sprite(direction, phase):
               (8, 13), (6, 11)], HAIR)
         upper((8, 5, 10, 6), HAIR_LIGHT)
         upper((11, 8, 12, 9), HAIR_LIGHT)
+        upper((7, 8, 8, 8), HAIR_LIGHT)
         upper((5, 8, 5, 11), "#a7a7ae")
         upper((14, 8, 14, 11), "#a7a7ae")
         upper((9, 13, 11, 13), SKIN_SHADE)
@@ -341,6 +421,7 @@ def sprite(direction, phase):
         upper((12, 5, 13, 6), HAIR_LIGHT)
         upper((11, 7, 12, 10), "#b4b1b4")
         upper((12, 7, 12, 7), CREAM)
+        upper((5, 9, 5, 9), SKIN_LIGHT)
 
     if direction == "right":
         image = image.transpose(Image.Transpose.FLIP_LEFT_RIGHT)

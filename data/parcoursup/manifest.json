@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "datasetId": "fr-esr-cartographie_formations_parcoursup",
+  "sourceUrl": "https://data.enseignementsup-recherche.gouv.fr/explore/dataset/fr-esr-cartographie_formations_parcoursup/",
+  "publisher": "Ministère de l'Enseignement supérieur, de la Recherche et de l'Espace",
+  "license": "Licence Ouverte v2.0 (Etalab)",
+  "licenseUrl": "https://www.etalab.gouv.fr/wp-content/uploads/2017/04/ETALAB-Licence-Ouverte-v2.0.pdf",
+  "campaign": "2026",
+  "sourceUpdatedOn": "2026-10-22",
+  "collectedOn": "2026-11-26",
+  "scope": "Sélection d’offres liées au numérique à Valenciennes, Anzin, Aulnoy-lez-Valenciennes et Famars.",
+  "scopeCommunes": [
+    "Valenciennes",
+    "Aulnoy-lez-Valenciennes",
+    "Anzin",
+    "Famars"
+  ],
+  "selectedFormationCodes": [
+    "39636",
+    "39646",
+    "44887",
+    "44894",
+    "44896",
+    "6956",
+    "6959",
+    "7003",
+    "7002",
+    "6847",
+    "22088",
+    "32112",
+    "6932",
+    "44394",
+    "35363",
+    "51002"
+  ],
+  "expectedRows": 16,
+  "localAllFieldsRows": 129,
+  "campaignRows": 25793,
+  "sha256": "2bf812da800888e899cab09131fd99dea67a74f368bb33903b3717a6ca4580ca",
+  "acquisitionUrl": "https://data.enseignementsup-recherche.gouv.fr/api/explore/v2.1/catalog/datasets/fr-esr-cartographie_formations_parcoursup/records?select=annee%2Cetab_uai%2Cetab_nom%2Ccommune%2Cgta%2Cgti%2Cnm%2Ctf%2Capp%2Cfiche&where=annee+%3D+%272026%27+AND+commune+IN+%28%27Valenciennes%27%2C%27Aulnoy-lez-Valenciennes%27%2C%27Anzin%27%2C%27Famars%27%29+AND+gta+IN+%28%2739636%27%2C%2739646%27%2C%2744887%27%2C%2744894%27%2C%2744896%27%2C%276956%27%2C%276959%27%2C%277003%27%2C%277002%27%2C%276847%27%2C%2722088%27%2C%2732112%27%2C%276932%27%2C%2744394%27%2C%2735363%27%2C%2751002%27%29&order_by=commune+ASC%2C+etab_uai+ASC%2C+gta+ASC%2C+gti+ASC&limit=100"
+}

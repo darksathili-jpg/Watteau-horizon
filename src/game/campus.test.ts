@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { bounds, facing, interactionRadius, movement, nearbyStation, obstacles, start, stations, walk, walkable } from './campus'
+import { bounds, cameraTarget, cameraZoom, facing, headingTo, interpolateCamera, interactionRadius, movement, nearbyStation, obstacles, start, stationAt, stations, walk, walkable, walkingPace } from './campus'
 import type { Position } from './campus'
 
 const repeatWalk = (position: Position, vector: Position, times: number) => {
@@ -43,5 +43,43 @@ describe('Déplacements du campus', () => {
       expect(nearbyStation({ x: station.x - interactionRadius, y: station.y })).toBe(station.id)
       expect(nearbyStation({ x: station.x - interactionRadius - 1, y: station.y })).toBeNull()
     }
+  })
+})
+
+describe('Cadre et guidage du campus', () => {
+  it('adapte le cadre au viewport et conserve une vue fixe pour la réduction des animations', () => {
+    expect(cameraZoom(390, false)).toBeGreaterThan(cameraZoom(900, false))
+    expect(cameraZoom(390, true)).toBe(1)
+    expect(cameraTarget(start, 1)).toEqual({ x: 480, y: 270 })
+    const zoom = cameraZoom(390, false)
+    const corner = cameraTarget({ x: bounds.left, y: bounds.top }, zoom)
+    expect(corner.x).toBeCloseTo(960 / 2 / zoom)
+    expect(corner.y).toBeCloseTo(540 / 2 / zoom)
+    expect(cameraTarget({ x: 800, y: 430 }, zoom).x).toBeGreaterThan(corner.x)
+  })
+
+  it('maintient le cadrage interpolé dans les limites des cibles et lisse le démarrage', () => {
+    const from = { x: 400, y: 250 }
+    const to = { x: 560, y: 315 }
+    expect(interpolateCamera(from, to, 0)).toEqual(from)
+    const next = interpolateCamera(from, to, 16)
+    expect(next.x).toBeGreaterThan(from.x)
+    expect(next.x).toBeLessThan(to.x)
+    expect(next.y).toBeGreaterThan(from.y)
+    expect(interpolateCamera(from, to, 2000).x).toBeCloseTo(to.x)
+    expect(walkingPace(0)).toBeLessThan(walkingPace(70))
+    expect(walkingPace(145)).toBe(1)
+    expect(walkingPace(300)).toBe(1)
+    expect(walk(start, { x: 1, y: 0 }, 16, walkingPace(0)).x).toBeLessThan(walk(start, { x: 1, y: 0 }, 16).x)
+  })
+
+  it('repère la destination et la zone du marqueur sans étendre le rayon d’interaction', () => {
+    const [station] = stations
+    expect(station).toBeDefined()
+    if (!station) throw new Error('Station attendue.')
+    expect(headingTo(start, station)).toBe('nord')
+    expect(stationAt({ x: station.x, y: station.y - 32 })).toBe(station.id)
+    expect(stationAt({ x: station.x, y: station.y - 65 })).toBeNull()
+    expect(nearbyStation(start)).toBeNull()
   })
 })
