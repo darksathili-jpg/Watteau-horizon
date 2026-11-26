@@ -159,3 +159,6 @@ vite.config.ts.timestamp-*
 # Playwright
 /playwright-report/
 /test-results/
+
+# Rapports locaux du harness
+/quality-results/

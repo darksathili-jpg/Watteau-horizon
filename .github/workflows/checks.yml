@@ -12,29 +12,29 @@ permissions:
 jobs:
   prototype:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
-    env:
-      WATTEAU_EVIDENCE_DIR: test-results/preuves
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
           persist-credentials: false
+          fetch-depth: 0
       - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
           node-version: '24'
           cache: npm
       - run: npm ci
-      - run: npm run build
-      - run: npm run check:static
-      - run: npm test
-      - run: npm audit --audit-level=moderate
-      - run: npx playwright install --with-deps chromium
-      - run: npm run test:e2e
+      - run: npm exec -- playwright install --with-deps chromium
+      - name: Exécuter les barrières et archiver les preuves
+        if: always()
+        run: npm run quality -- --out quality-results/ci
+      - name: Résumer les résultats
+        if: always() && hashFiles('quality-results/ci/report.md') != ''
+        run: cat quality-results/ci/report.md >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         if: always()
         with:
           name: controles-watteau-horizon
           path: |
-            playwright-report/
+            quality-results/ci/
             test-results/
           if-no-files-found: ignore

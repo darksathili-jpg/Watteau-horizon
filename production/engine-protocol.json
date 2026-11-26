@@ -1,0 +1,19 @@
+{
+  "schema": 1,
+  "state": "planned",
+  "control": "phaser-canvas",
+  "candidates": ["godot-4-web", "three-js"],
+  "scenarios": ["cold-campus", "movement-collision", "three-stations", "reduced-motion", "accessible-fallback", "resume-and-erase"],
+  "deviceClasses": ["school-desktop", "physical-low-end-android", "physical-ios"],
+  "minimumColdRunsPerCombination": 5,
+  "movementSampleSeconds": 60,
+  "proposedBudgets": {
+    "desktopReadyMedianMs": 2500,
+    "mobileReadyMedianMs": 3500,
+    "desktopFrameP95Ms": 25,
+    "mobileFrameP95Ms": 40,
+    "initialTransferBytes": 3145728,
+    "unhandledErrors": 0
+  },
+  "results": []
+}

@@ -20,3 +20,7 @@ Jeu web d’orientation post-bac du lycée Watteau de Valenciennes. Univers urba
 
 ## Exécution
 Commencer par un prototype vertical jouable et une chaîne de données minimale vérifiable. Étendre seulement après réussite des contrôles. Travailler par lots cohérents et commits traçables. Les choix provisoires doivent être documentés.
+
+## Harness V2
+
+Le [référentiel de production](docs/production/README.md) indique les compétences Guardians dans `.agents/skills/`, les huit barrières et les pièces attendues. Exécuter `npm run quality` sur la révision à livrer et conserver les rapports. La comparaison graphique utilise la référence Git consignée dans `production/baseline.json`. Toute nouvelle référence exige une justification et des preuves visuelles conservées. Une mise à disposition élèves exige la réussite du profil `npm run quality:students` sur un checkout propre et les revues institutionnelles liées à cette révision.

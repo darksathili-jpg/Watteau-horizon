@@ -40,3 +40,7 @@ Le campus et Antoine sont fictifs. Les visuels originaux livrés dans `public/ar
 ## Prévisualisation de développement
 
 La compilation `VITE_WATTEAU_PREVIEW=1 npm run build` affiche le bandeau de prévisualisation. Le workflow GitHub Actions **Prévisualisation de développement** est manuel et réserve le déploiement à `main` après les contrôles. L’état d’activation de GitHub Pages figure dans le journal de recette.
+
+## Harness de production V2
+
+`npm run quality` exécute les barrières Q1 à Q8 et produit un rapport traçable. Les six Guardians permettent d’isoler une famille de contrôles. La mise à disposition élèves utilise le profil dédié et les pièces de revue du commit. [Référentiel et commandes](docs/production/README.md)

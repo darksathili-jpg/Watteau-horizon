@@ -1,0 +1,13 @@
+{
+  "schema": 1,
+  "commit": null,
+  "subjectSha256": null,
+  "reviews": {
+    "art-rights": { "status": "pending" },
+    "manual-accessibility": { "status": "pending" },
+    "target-device-performance": { "status": "pending" },
+    "catalogue-and-licences": { "status": "pending" },
+    "privacy-review": { "status": "pending" },
+    "institutional-authorization": { "status": "pending" }
+  }
+}

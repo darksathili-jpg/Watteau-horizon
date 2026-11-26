@@ -1,0 +1,30 @@
+{
+  "schema": 1,
+  "guardians": {
+    "production": ["Q1", "Q8"],
+    "gameplay": ["Q2", "Q7"],
+    "art": ["Q3"],
+    "accessibility": ["Q4"],
+    "data": ["Q5"],
+    "privacy": ["Q6"]
+  },
+  "visual": {
+    "maximumChangedPixels": 0,
+    "viewports": {
+      "desktop": { "width": 1440, "height": 960 },
+      "mobile": { "width": 390, "height": 844 }
+    }
+  },
+  "budgets": {
+    "playableJavaScriptGzipBytes": 460800,
+    "catalogueJavaScriptGzipBytes": 16384
+  },
+  "studentReviews": [
+    "art-rights",
+    "manual-accessibility",
+    "target-device-performance",
+    "catalogue-and-licences",
+    "privacy-review",
+    "institutional-authorization"
+  ]
+}

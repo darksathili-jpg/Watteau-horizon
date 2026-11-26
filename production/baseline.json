@@ -1,0 +1,23 @@
+{
+  "schema": 1,
+  "revision": "b7c673172ca7102aca6e019668530da16c74f816",
+  "githubActions": "https://github.com/darksathili-jpg/Watteau-horizon/actions/runs/45743318984",
+  "minimumUnitTests": 28,
+  "minimumBrowserTests": 9,
+  "protectedTests": {
+    "playwright.config.ts": "7ab6de2601975028925e8355709b6c68f0623aa254ad5760fc7c53999d15f2fd",
+    "src/data/import-catalogue.test.ts": "f56b0a30cec29e6b4294af5e294f3157d0aafed3291a50650b40aef36dceb87d",
+    "src/data/import-training.test.ts": "578659501d6aeafb0a0b524d4c9fc593877c97fa1ca6f4b61ed081fce3591dd0",
+    "src/domain/mission.test.ts": "41c97386a60ab0b0e6108df5be6d2bf63e0927511d4e3bbab643601ebc579d0a",
+    "src/game/campus.test.ts": "89ba8db5172b63382aa8b282a804b765798679f083645f77967cb0a0d6a014b6",
+    "src/persistence/save.test.ts": "88abb34d2affec8c0b0db159270b2eae39263bd54757759851c136d5fd2672c3",
+    "tests/check-static.mjs": "8e883455cd19c7c6cb4ab2d59a44c0c264fd3b7e53683f5828d6c638896b03bc",
+    "tests/prototype.spec.ts": "d5d59d9e805415c0dc08c998f855fbcc3ae2cc7ba293e3377cf5277f42285c34",
+    "tests/serve-dist.mjs": "4ca7da0f87ab686c2547c649d09fb96545139d4badb6798d7a80346e2d0495d9"
+  },
+  "art": {
+    "public/art/antoine-atlas.png": "ea0d5ff7ec4d9e7fb8c7cde588096eb790a50b6375a0dd8710bc1e376bee6139",
+    "public/art/antoine-portrait.png": "0182449e064ec78d3e3c96947ea49a573eec8130e4cdffb937b018f96a57e8cd",
+    "public/art/campus.webp": "8cb51042291a2bf69414c01be12cd2c11cc6ce48e1be292828c247cca00e2331"
+  }
+}

@@ -15,7 +15,11 @@
     "test:e2e": "playwright test",
     "check:static": "node tests/check-static.mjs",
     "catalogue:import": "node --experimental-strip-types tools/import-catalogue.mjs",
-    "catalogue:check": "node --experimental-strip-types tools/import-catalogue.mjs --check"
+    "catalogue:check": "node --experimental-strip-types tools/import-catalogue.mjs --check",
+    "quality": "node tools/harness/run.mjs",
+    "quality:students": "node tools/harness/run.mjs --profile students",
+    "quality:test": "node --test --test-isolation=none tools/harness/*.test.mjs",
+    "guardian": "node tools/harness/run.mjs --guardian"
   },
   "dependencies": {
     "phaser": "3.90.0",
