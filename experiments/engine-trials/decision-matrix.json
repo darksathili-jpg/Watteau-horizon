@@ -1,0 +1,148 @@
+{
+  "schemaVersion": 1,
+  "protocol": "../../production/engine-protocol.json",
+  "method": "../../docs/production/ENGINE-TRIALS-METHOD.md",
+  "issue": "https://github.com/darksathili-jpg/Watteau-horizon/issues/1",
+  "productionBaseline": "b7c673172ca7102aca6e019668530da16c74f816",
+  "engines": [
+    {
+      "id": "phaser-canvas",
+      "role": "témoin",
+      "version": "3.90.0",
+      "renderer": "Canvas",
+      "release": "https://github.com/phaserjs/phaser/releases/tag/v3.90.0"
+    },
+    {
+      "id": "three-js",
+      "role": "candidat",
+      "version": "0.187.0",
+      "renderer": "WebGLRenderer / WebGL 2",
+      "release": "https://github.com/mrdoob/three.js/releases/tag/r187",
+      "license": "https://github.com/mrdoob/three.js/blob/r187/LICENSE"
+    },
+    {
+      "id": "godot-4-web",
+      "role": "candidat",
+      "version": "4.7.2-stable",
+      "renderer": "Compatibility / WebGL 2",
+      "export": "Web mono-thread sans extensions natives",
+      "release": "https://github.com/godotengine/godot/releases/tag/4.7.2-stable",
+      "license": "https://godotengine.org/license/",
+      "exportTemplatesSha256": "f298490b8d44d934be425a5a65a51bf15f422428b229a06a6e11d9ffea248011",
+      "exportTemplateName": "web_nothreads_release.zip",
+      "exportTemplateSha256": "d3ee2f08cef0cf3cf6678a6355a92a8db48ccdd35cbd2e8bfd5f0e8a0b4032a0"
+    }
+  ],
+  "screening": {
+    "purpose": "Repérer les défauts, produire des traces comparables et préparer les essais physiques.",
+    "profiles": [
+      { "id": "desktop-local", "physicalTarget": false, "viewportCssPx": [1440, 960], "touch": false },
+      { "id": "mobile-emulated", "physicalTarget": false, "viewportCssPx": [390, 844], "touch": true }
+    ],
+    "browserFamily": "Chromium",
+    "expectedRenderer": "ANGLE / SwiftShader",
+    "judgement": "Les résultats de présélection ne valident pas les seuils sur les appareils cibles."
+  },
+  "targetQualification": {
+    "devices": [
+      { "id": "school-desktop", "status": "PENDING", "evidence": null },
+      { "id": "physical-low-end-android", "status": "PENDING", "evidence": null },
+      { "id": "physical-ios", "status": "PENDING", "evidence": null }
+    ],
+    "minimumColdRunsPerCombination": 5,
+    "movementSampleSeconds": 60,
+    "thresholds": {
+      "initialTransferBytes": 3145728,
+      "desktopReadyMedianMs": 2500,
+      "mobileReadyMedianMs": 3500,
+      "desktopFrameP95Ms": 25,
+      "mobileFrameP95Ms": 40,
+      "unhandledErrors": 0
+    },
+    "requiredScenarios": [
+      "cold-campus",
+      "movement-collision",
+      "three-stations",
+      "reduced-motion",
+      "accessible-fallback",
+      "resume-and-erase"
+    ]
+  },
+  "physicalResultTemplate": {
+    "engine": null,
+    "engineVersion": null,
+    "commit": null,
+    "deviceClass": null,
+    "deviceModel": null,
+    "operatingSystem": null,
+    "browserVersion": null,
+    "graphicsAdapter": null,
+    "viewportCssPx": null,
+    "devicePixelRatio": null,
+    "networkProfile": null,
+    "coldRunCount": null,
+    "failedRunCount": null,
+    "initialTransferBytesPerRun": null,
+    "readyMedianMs": null,
+    "frameIntervalP95Ms": null,
+    "unhandledErrors": null,
+    "scenarios": null,
+    "evidence": null,
+    "status": "PENDING"
+  },
+  "criteria": [
+    {
+      "id": "technique",
+      "evidence": [
+        "Paquet et version reproductibles sur le sous-chemin relatif de GitHub Pages",
+        "Traces brutes de chargement, octets transférés, intervalles d’image et erreurs",
+        "Collisions, trois interactions et états de reprise contrôlés sur chaque cible physique"
+      ],
+      "required": true
+    },
+    {
+      "id": "valeur-artistique",
+      "evidence": [
+        "Contrat graphique approuvé et référence dont les droits sont documentés",
+        "Captures comparables commentées avec écarts de représentation",
+        "Revue humaine de la lisibilité, de la profondeur, de la caméra, du mouvement et de l’éclairage"
+      ],
+      "required": true
+    },
+    {
+      "id": "maintenance",
+      "evidence": [
+        "Reconstruction depuis un checkout propre, versions et licences relevées",
+        "Coût documenté de la chaîne d’assets, de l’export et du raccordement React",
+        "Nombre de dépendances, étapes propres au moteur et masse des artefacts"
+      ],
+      "required": true
+    },
+    {
+      "id": "accessibilite",
+      "evidence": [
+        "Clavier et tactile, focus, lecteur d’écran, zoom et mouvement réduit",
+        "Retour au parcours sans jeu et repli si le moteur est indisponible",
+        "Équivalence des trois interactions, de la réflexion et du carnet"
+      ],
+      "required": true
+    }
+  ],
+  "humanReviews": [
+    { "id": "contrat-graphique-approuve", "status": "PENDING", "reviewer": null, "date": null, "evidence": null },
+    { "id": "valeur-artistique-comparee", "status": "PENDING", "reviewer": null, "date": null, "evidence": null },
+    { "id": "accessibilite-manuelle", "status": "PENDING", "reviewer": null, "date": null, "evidence": null },
+    { "id": "integration-maintenance-licences", "status": "PENDING", "reviewer": null, "date": null, "evidence": null }
+  ],
+  "decision": {
+    "status": "DEFERRED",
+    "retainedEngine": "phaser-canvas",
+    "reviewWhen": [
+      "Mesures fiables sur les trois classes physiques du protocole",
+      "Contrat graphique approuvé et valeur comparée documentée",
+      "Parcours accessible, hébergement et maintenance vérifiés pour la révision candidate"
+    ],
+    "rule": "Écarter un candidat qui échoue à une condition obligatoire. En cas de données manquantes ou de bénéfice insuffisamment étayé, conserver Phaser Canvas.",
+    "studentReleasePolicy": "../../docs/production/QUALITY.md"
+  }
+}

@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="referrer" content="no-referrer">
+  <link rel="icon" href="data:,">
+  <title>Essais moteur · Watteau Horizon</title>
+  <script type="module" src="./main.mjs"></script>
+</head>
+<body>
+  <header class="mast">
+    <div><span class="wordmark">Watteau Horizon</span><span class="chip">P3 · Essais moteur</span></div>
+    <nav aria-label="Moteurs de l’essai">
+      <a href="?engine=phaser">Phaser Canvas</a><a href="?engine=three">Three.js</a><a href="?engine=godot">Godot Web</a>
+    </nav>
+  </header>
+  <main>
+    <div class="intro">
+      <div><p class="tagline">Démonstrateur · campus fictif</p><h1 id="engine-title">Essais moteur</h1></div>
+      <div class="settings">
+        <button id="motion" type="button" aria-pressed="false">Réduire les mouvements</button>
+        <button id="mode" type="button" aria-pressed="false">Sans jeu</button>
+      </div>
+    </div>
+    <div class="workspace">
+      <section id="world" class="stage" tabindex="0" aria-label="Scène de déplacement" aria-describedby="keys">
+        <div id="surface"></div><p id="loading" role="status">Chargement du moteur…</p>
+      </section>
+      <aside class="panel mission">
+        <p class="tagline">Mission numérique</p><h2>Le relais numérique</h2>
+        <p id="objective" aria-live="polite"></p>
+        <ol id="progress"></ol>
+        <button id="interact" class="action" type="button" disabled>Ouvrir l’étape</button>
+        <p id="step-status" class="minor" aria-live="polite"></p>
+      </aside>
+    </div>
+    <div class="controls">
+      <p id="keys">Sélectionne la scène. Flèches pour te déplacer, Entrée pour ouvrir le repère à portée.</p>
+      <div class="directions" role="group" aria-label="Déplacement tactile">
+        <button type="button" data-direction="left" aria-label="Gauche">←</button><button type="button" data-direction="up" aria-label="Haut">↑</button><button type="button" data-direction="down" aria-label="Bas">↓</button><button type="button" data-direction="right" aria-label="Droite">→</button>
+      </div>
+    </div>
+    <section class="panel notebook" aria-labelledby="notes-title">
+      <div><h2 id="notes-title">Carnet de l’essai</h2><label for="note">Une idée à retenir</label></div>
+      <textarea id="note" maxlength="300" rows="2"></textarea>
+      <div class="notebook-buttons"><button id="save" type="button">Enregistrer ma note</button><button id="erase" type="button">Effacer les données de l’essai</button></div>
+      <p id="save-status" class="minor" aria-live="polite"></p>
+    </section>
+  </main>
+  <dialog id="dialog" aria-labelledby="question-heading">
+    <form id="question-form">
+      <h2 id="question-heading"></h2><p id="prompt"></p>
+      <fieldset id="choices"><legend>Choisis une réponse</legend><div id="choices-list"></div></fieldset>
+      <p id="feedback" aria-live="polite"></p>
+      <div class="notebook-buttons"><button id="close" type="button">Fermer</button><button type="submit" class="action">Vérifier mon choix</button></div>
+    </form>
+  </dialog>
+  <dialog id="erase-dialog" aria-labelledby="erase-title">
+    <h2 id="erase-title">Effacer les données de cet essai ?</h2><p>La progression et la note du moteur courant seront effacées dans ce navigateur.</p>
+    <div class="notebook-buttons"><button id="cancel-erase" type="button">Annuler</button><button id="confirm-erase" type="button" class="action">Confirmer l’effacement</button></div>
+  </dialog>
+</body>
+</html>
