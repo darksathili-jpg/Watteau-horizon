@@ -1,0 +1,47 @@
+[
+  {
+    "path": "references/ART-01-V2-gameplay.png",
+    "sha256": "71f9ba6bd93684ae0cdbdb469a88b68127b8e2e6b696d3eb22bfe9b4579763bd",
+    "dimensions": [
+      1672,
+      941
+    ],
+    "status": "concept visuel, non modèle 3D"
+  },
+  {
+    "path": "references/ART-02-Antoine.png",
+    "sha256": "abebf65ac52cdff07c191f12d5d2e83bb840a38e5aed42312046d47388ca2a34",
+    "dimensions": [
+      1536,
+      1024
+    ],
+    "status": "concept visuel, non modèle 3D"
+  },
+  {
+    "path": "references/ART-02-avatar.png",
+    "sha256": "6201c6521c3c369a77a812b65030412d4bd7fc2551543d6484bf4d70ad8b1dfc",
+    "dimensions": [
+      1536,
+      1024
+    ],
+    "status": "concept visuel, non modèle 3D"
+  },
+  {
+    "path": "references/ART-02-synthese.png",
+    "sha256": "4f621e6c7b1fb580c470581c11d1ba2308583007df43d8acfb3b99a018894310",
+    "dimensions": [
+      1672,
+      941
+    ],
+    "status": "concept visuel, non modèle 3D"
+  },
+  {
+    "path": "references/historique-prototype.png",
+    "sha256": "7c091891be5ac9cabfb1110b6f5744a2efcb5c1ad1c7f0e7ab55f4da202adbdf",
+    "dimensions": [
+      1440,
+      1024
+    ],
+    "status": "historique uniquement"
+  }
+]

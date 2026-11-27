@@ -1,0 +1,618 @@
+{
+  "schema": 1,
+  "context": "P4 · démonstration de développement, revue de diffusion en attente",
+  "assets": [
+    {
+      "name": "campus.glb",
+      "source": "campus.py",
+      "kind": "Décor original fictif",
+      "rights": "Création P4. Revue de diffusion en attente. Voir CAMPUS.md.",
+      "sourceSha256": "06fee184ea73c6b52fddb6feb6c045fff078bf831897a9a4d45f85970fd4c396",
+      "sha256": "bcf58fad44c199154a6bbec5fce0388c78c3aa5bf3edbeb714685fa3bd3bc33d",
+      "bytes": 1605140,
+      "gzipBytes": 924122,
+      "meshes": 17,
+      "primitives": 143,
+      "materials": 31,
+      "triangles": 51205,
+      "vertices": 92391,
+      "skins": [],
+      "animations": [],
+      "textures": [
+        {
+          "name": "pavés-relief",
+          "mime": "image/png",
+          "width": 256,
+          "height": 256,
+          "bytes": 91562
+        },
+        {
+          "name": "pavés-couleur",
+          "mime": "image/jpeg",
+          "width": 256,
+          "height": 256,
+          "bytes": 10700
+        },
+        {
+          "name": "briques-relief",
+          "mime": "image/png",
+          "width": 256,
+          "height": 256,
+          "bytes": 92643
+        },
+        {
+          "name": "briques-couleur",
+          "mime": "image/jpeg",
+          "width": 256,
+          "height": 256,
+          "bytes": 8555
+        },
+        {
+          "name": "ardoises-relief",
+          "mime": "image/png",
+          "width": 256,
+          "height": 256,
+          "bytes": 91445
+        },
+        {
+          "name": "ardoises-couleur",
+          "mime": "image/jpeg",
+          "width": 256,
+          "height": 256,
+          "bytes": 7613
+        },
+        {
+          "name": "ecorce-relief",
+          "mime": "image/png",
+          "width": 128,
+          "height": 128,
+          "bytes": 40592
+        },
+        {
+          "name": "ecorce-couleur",
+          "mime": "image/jpeg",
+          "width": 128,
+          "height": 128,
+          "bytes": 2304
+        }
+      ],
+      "lod": "Aucun niveau alternatif dans cet export",
+      "pbr": true,
+      "extensions": [
+        "EXT_meshopt_compression",
+        "KHR_mesh_quantization"
+      ],
+      "uvPrimitives": 143,
+      "validator": {
+        "version": "2.0.0-dev.3.10",
+        "errors": 0,
+        "warnings": 13
+      }
+    },
+    {
+      "name": "avatar.glb",
+      "source": "characters.py",
+      "kind": "Avatar contrôlé · création P4",
+      "rights": "Entrées anatomiques MPFB sous CC0 1.0. Créations P4. Voir CHARACTER-SOURCES.md.",
+      "sourceSha256": "134c99671b4b112777c361b1ef7fa766b95c636d71b7788a28852cd0d907f60f",
+      "sha256": "4cd5977689f284aa304ca6cf3a4a1212d5212fa5bef866078b7e90c2e6575f26",
+      "bytes": 1036812,
+      "gzipBytes": 764086,
+      "meshes": 1,
+      "primitives": 24,
+      "materials": 24,
+      "triangles": 52638,
+      "vertices": 33507,
+      "skins": [
+        [
+          "Hips",
+          "Spine",
+          "Chest",
+          "Neck",
+          "Head",
+          "Clavicle.L",
+          "UpperArm.L",
+          "Forearm.L",
+          "Hand.L",
+          "Clavicle.R",
+          "UpperArm.R",
+          "Forearm.R",
+          "Hand.R",
+          "UpperLeg.L",
+          "Shin.L",
+          "Foot.L",
+          "UpperLeg.R",
+          "Shin.R",
+          "Foot.R"
+        ]
+      ],
+      "animations": [
+        {
+          "name": "Idle",
+          "channels": 57,
+          "durationSeconds": 3.033
+        },
+        {
+          "name": "Walk",
+          "channels": 57,
+          "durationSeconds": 1.033
+        },
+        {
+          "name": "Run",
+          "channels": 57,
+          "durationSeconds": 0.767
+        },
+        {
+          "name": "Turn",
+          "channels": 57,
+          "durationSeconds": 1.1
+        },
+        {
+          "name": "Interact",
+          "channels": 57,
+          "durationSeconds": 1.833
+        },
+        {
+          "name": "Dialogue",
+          "channels": 57,
+          "durationSeconds": 2.633
+        }
+      ],
+      "textures": [
+        {
+          "name": "avatar-skin",
+          "mime": "image/png",
+          "width": 768,
+          "height": 768,
+          "bytes": 191609
+        },
+        {
+          "name": "avatar-iris",
+          "mime": "image/png",
+          "width": 128,
+          "height": 128,
+          "bytes": 6539
+        },
+        {
+          "name": "avatar-hair",
+          "mime": "image/png",
+          "width": 128,
+          "height": 128,
+          "bytes": 3441
+        },
+        {
+          "name": "tissage-normal",
+          "mime": "image/png",
+          "width": 64,
+          "height": 64,
+          "bytes": 171
+        },
+        {
+          "name": "avatar-jacket",
+          "mime": "image/png",
+          "width": 128,
+          "height": 128,
+          "bytes": 8213
+        },
+        {
+          "name": "avatar-jacket_shade",
+          "mime": "image/png",
+          "width": 128,
+          "height": 128,
+          "bytes": 8224
+        },
+        {
+          "name": "avatar-rib",
+          "mime": "image/png",
+          "width": 128,
+          "height": 128,
+          "bytes": 8219
+        },
+        {
+          "name": "avatar-thread",
+          "mime": "image/png",
+          "width": 128,
+          "height": 128,
+          "bytes": 8231
+        },
+        {
+          "name": "avatar-hood",
+          "mime": "image/png",
+          "width": 128,
+          "height": 128,
+          "bytes": 8153
+        },
+        {
+          "name": "avatar-hood_shade",
+          "mime": "image/png",
+          "width": 128,
+          "height": 128,
+          "bytes": 8221
+        },
+        {
+          "name": "avatar-shirt",
+          "mime": "image/png",
+          "width": 128,
+          "height": 128,
+          "bytes": 8183
+        },
+        {
+          "name": "avatar-pants",
+          "mime": "image/png",
+          "width": 128,
+          "height": 128,
+          "bytes": 8191
+        },
+        {
+          "name": "avatar-pocket",
+          "mime": "image/png",
+          "width": 128,
+          "height": 128,
+          "bytes": 8240
+        },
+        {
+          "name": "avatar-zip",
+          "mime": "image/png",
+          "width": 128,
+          "height": 128,
+          "bytes": 6512
+        },
+        {
+          "name": "avatar-bag",
+          "mime": "image/png",
+          "width": 128,
+          "height": 128,
+          "bytes": 8210
+        },
+        {
+          "name": "avatar-shoe",
+          "mime": "image/png",
+          "width": 128,
+          "height": 128,
+          "bytes": 6534
+        },
+        {
+          "name": "avatar-lace",
+          "mime": "image/png",
+          "width": 128,
+          "height": 128,
+          "bytes": 8208
+        },
+        {
+          "name": "avatar-eye",
+          "mime": "image/png",
+          "width": 128,
+          "height": 128,
+          "bytes": 6477
+        },
+        {
+          "name": "avatar-pupil",
+          "mime": "image/png",
+          "width": 128,
+          "height": 128,
+          "bytes": 6470
+        },
+        {
+          "name": "avatar-hair_light",
+          "mime": "image/png",
+          "width": 128,
+          "height": 128,
+          "bytes": 3442
+        },
+        {
+          "name": "avatar-hair_dark",
+          "mime": "image/png",
+          "width": 128,
+          "height": 128,
+          "bytes": 3439
+        },
+        {
+          "name": "avatar-bag_panel",
+          "mime": "image/png",
+          "width": 128,
+          "height": 128,
+          "bytes": 8177
+        },
+        {
+          "name": "avatar-outsole",
+          "mime": "image/png",
+          "width": 128,
+          "height": 128,
+          "bytes": 6514
+        },
+        {
+          "name": "avatar-rubber",
+          "mime": "image/png",
+          "width": 128,
+          "height": 128,
+          "bytes": 6453
+        },
+        {
+          "name": "avatar-strap",
+          "mime": "image/png",
+          "width": 128,
+          "height": 128,
+          "bytes": 8245
+        }
+      ],
+      "lod": "Aucun niveau alternatif dans cet export",
+      "pbr": true,
+      "extensions": [
+        "EXT_meshopt_compression",
+        "KHR_mesh_quantization"
+      ],
+      "uvPrimitives": 24,
+      "validator": {
+        "version": "2.0.0-dev.3.10",
+        "errors": 0,
+        "warnings": 8
+      }
+    },
+    {
+      "name": "antoine.glb",
+      "source": "characters.py",
+      "kind": "Antoine · création P4",
+      "rights": "Entrées anatomiques MPFB sous CC0 1.0. Créations P4. Voir CHARACTER-SOURCES.md.",
+      "sourceSha256": "134c99671b4b112777c361b1ef7fa766b95c636d71b7788a28852cd0d907f60f",
+      "sha256": "34858720777124d1085f3a1dd4cf9ee69879003f53724b5d0c7d9c60abe7306e",
+      "bytes": 1033136,
+      "gzipBytes": 760253,
+      "meshes": 1,
+      "primitives": 24,
+      "materials": 24,
+      "triangles": 52634,
+      "vertices": 33508,
+      "skins": [
+        [
+          "Hips",
+          "Spine",
+          "Chest",
+          "Neck",
+          "Head",
+          "Clavicle.L",
+          "UpperArm.L",
+          "Forearm.L",
+          "Hand.L",
+          "Clavicle.R",
+          "UpperArm.R",
+          "Forearm.R",
+          "Hand.R",
+          "UpperLeg.L",
+          "Shin.L",
+          "Foot.L",
+          "UpperLeg.R",
+          "Shin.R",
+          "Foot.R"
+        ]
+      ],
+      "animations": [
+        {
+          "name": "Idle",
+          "channels": 57,
+          "durationSeconds": 3.033
+        },
+        {
+          "name": "Walk",
+          "channels": 57,
+          "durationSeconds": 1.033
+        },
+        {
+          "name": "Run",
+          "channels": 57,
+          "durationSeconds": 0.767
+        },
+        {
+          "name": "Turn",
+          "channels": 57,
+          "durationSeconds": 1.1
+        },
+        {
+          "name": "Interact",
+          "channels": 57,
+          "durationSeconds": 1.833
+        },
+        {
+          "name": "Dialogue",
+          "channels": 57,
+          "durationSeconds": 2.633
+        }
+      ],
+      "textures": [
+        {
+          "name": "antoine-skin",
+          "mime": "image/png",
+          "width": 768,
+          "height": 768,
+          "bytes": 188410
+        },
+        {
+          "name": "antoine-iris",
+          "mime": "image/png",
+          "width": 128,
+          "height": 128,
+          "bytes": 6454
+        },
+        {
+          "name": "antoine-hair",
+          "mime": "image/png",
+          "width": 128,
+          "height": 128,
+          "bytes": 3442
+        },
+        {
+          "name": "tissage-normal",
+          "mime": "image/png",
+          "width": 64,
+          "height": 64,
+          "bytes": 171
+        },
+        {
+          "name": "antoine-jacket",
+          "mime": "image/png",
+          "width": 128,
+          "height": 128,
+          "bytes": 8198
+        },
+        {
+          "name": "antoine-jacket_shade",
+          "mime": "image/png",
+          "width": 128,
+          "height": 128,
+          "bytes": 8201
+        },
+        {
+          "name": "antoine-rib",
+          "mime": "image/png",
+          "width": 128,
+          "height": 128,
+          "bytes": 8157
+        },
+        {
+          "name": "antoine-thread",
+          "mime": "image/png",
+          "width": 128,
+          "height": 128,
+          "bytes": 8202
+        },
+        {
+          "name": "antoine-hood",
+          "mime": "image/png",
+          "width": 128,
+          "height": 128,
+          "bytes": 8214
+        },
+        {
+          "name": "antoine-hood_shade",
+          "mime": "image/png",
+          "width": 128,
+          "height": 128,
+          "bytes": 8207
+        },
+        {
+          "name": "antoine-shirt",
+          "mime": "image/png",
+          "width": 128,
+          "height": 128,
+          "bytes": 8156
+        },
+        {
+          "name": "antoine-pants",
+          "mime": "image/png",
+          "width": 128,
+          "height": 128,
+          "bytes": 8175
+        },
+        {
+          "name": "antoine-pocket",
+          "mime": "image/png",
+          "width": 128,
+          "height": 128,
+          "bytes": 8184
+        },
+        {
+          "name": "antoine-zip",
+          "mime": "image/png",
+          "width": 128,
+          "height": 128,
+          "bytes": 6510
+        },
+        {
+          "name": "antoine-bag",
+          "mime": "image/png",
+          "width": 128,
+          "height": 128,
+          "bytes": 8158
+        },
+        {
+          "name": "antoine-shoe",
+          "mime": "image/png",
+          "width": 128,
+          "height": 128,
+          "bytes": 6498
+        },
+        {
+          "name": "antoine-lace",
+          "mime": "image/png",
+          "width": 128,
+          "height": 128,
+          "bytes": 8259
+        },
+        {
+          "name": "antoine-eye",
+          "mime": "image/png",
+          "width": 128,
+          "height": 128,
+          "bytes": 6501
+        },
+        {
+          "name": "antoine-pupil",
+          "mime": "image/png",
+          "width": 128,
+          "height": 128,
+          "bytes": 6496
+        },
+        {
+          "name": "antoine-hair_light",
+          "mime": "image/png",
+          "width": 128,
+          "height": 128,
+          "bytes": 3442
+        },
+        {
+          "name": "antoine-hair_dark",
+          "mime": "image/png",
+          "width": 128,
+          "height": 128,
+          "bytes": 3441
+        },
+        {
+          "name": "antoine-bag_panel",
+          "mime": "image/png",
+          "width": 128,
+          "height": 128,
+          "bytes": 8158
+        },
+        {
+          "name": "antoine-outsole",
+          "mime": "image/png",
+          "width": 128,
+          "height": 128,
+          "bytes": 6515
+        },
+        {
+          "name": "antoine-rubber",
+          "mime": "image/png",
+          "width": 128,
+          "height": 128,
+          "bytes": 6442
+        },
+        {
+          "name": "antoine-strap",
+          "mime": "image/png",
+          "width": 128,
+          "height": 128,
+          "bytes": 8121
+        }
+      ],
+      "lod": "Aucun niveau alternatif dans cet export",
+      "pbr": true,
+      "extensions": [
+        "EXT_meshopt_compression",
+        "KHR_mesh_quantization"
+      ],
+      "uvPrimitives": 24,
+      "validator": {
+        "version": "2.0.0-dev.3.10",
+        "errors": 0,
+        "warnings": 8
+      }
+    },
+    {
+      "name": "antoine.webp",
+      "kind": "Portrait d’Antoine issu de son modèle 3D",
+      "rights": "Rendu Blender de la création P4. Voir CHARACTER-SOURCES.md.",
+      "sha256": "1717120dada822588b6cae3f9dbd663a4ccf9e9478e62992b3ff9b781094cf94",
+      "bytes": 27282
+    }
+  ]
+}

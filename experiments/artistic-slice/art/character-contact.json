@@ -1,0 +1,132 @@
+{
+  "sampling": {
+    "space": "glTF, repos au sol à Y = 0 et avant +Z",
+    "input": "GLB source Blender non comprimés",
+    "samplesPerClip": 91,
+    "interpolation": "STEP ou LINEAR selon le canal, interpolation sphérique pour les rotations LINEAR",
+    "soleDefinition": "Sommets au repos à moins de 0,1 mm du plan Y = 0, skinnés par le squelette",
+    "command": "blender -b --python-exit-code 1 --python experiments/artistic-slice/art/character-contact.py -- /tmp/watteau-glb-verification"
+  },
+  "characters": [
+    {
+      "file": "avatar.glb",
+      "sourceBytes": 2606812,
+      "sourceSha256": "b03e6dbc07d0e315de60cc6018f797cbb0aad4f956bca645779a16169445c872",
+      "glTFVertices": 33507,
+      "triangles": 52638,
+      "heightMeters": 1.726061,
+      "restMinimumYMeters": 0.0,
+      "joints": 19,
+      "materials": 24,
+      "embeddedImages": 25,
+      "normalMappedMaterials": 7,
+      "soleVertices": 216,
+      "clips": [
+        {
+          "clip": "Idle",
+          "durationSeconds": 3.03333,
+          "channels": 57,
+          "minimumSoleYMeters": -2e-06,
+          "highestBothSolesYMeters": 0.0
+        },
+        {
+          "clip": "Walk",
+          "durationSeconds": 1.03333,
+          "channels": 57,
+          "minimumSoleYMeters": -0.007677,
+          "highestBothSolesYMeters": -0.0
+        },
+        {
+          "clip": "Run",
+          "durationSeconds": 0.76667,
+          "channels": 57,
+          "minimumSoleYMeters": -0.006812,
+          "highestBothSolesYMeters": 0.013027
+        },
+        {
+          "clip": "Turn",
+          "durationSeconds": 1.1,
+          "channels": 57,
+          "minimumSoleYMeters": -1.7e-05,
+          "highestBothSolesYMeters": -0.0
+        },
+        {
+          "clip": "Interact",
+          "durationSeconds": 1.83333,
+          "channels": 57,
+          "minimumSoleYMeters": -6e-06,
+          "highestBothSolesYMeters": 0.0
+        },
+        {
+          "clip": "Dialogue",
+          "durationSeconds": 2.63333,
+          "channels": 57,
+          "minimumSoleYMeters": -3e-06,
+          "highestBothSolesYMeters": 0.0
+        }
+      ]
+    },
+    {
+      "file": "antoine.glb",
+      "sourceBytes": 2603216,
+      "sourceSha256": "d61ec983874d17c895ccbbc75adf3222c8813b65683037ecbde87fde3903c2de",
+      "glTFVertices": 33508,
+      "triangles": 52634,
+      "heightMeters": 1.747677,
+      "restMinimumYMeters": 0.0,
+      "joints": 19,
+      "materials": 24,
+      "embeddedImages": 25,
+      "normalMappedMaterials": 7,
+      "soleVertices": 216,
+      "clips": [
+        {
+          "clip": "Idle",
+          "durationSeconds": 3.03333,
+          "channels": 57,
+          "minimumSoleYMeters": -2e-06,
+          "highestBothSolesYMeters": 0.0
+        },
+        {
+          "clip": "Walk",
+          "durationSeconds": 1.03333,
+          "channels": 57,
+          "minimumSoleYMeters": -0.007557,
+          "highestBothSolesYMeters": -1e-06
+        },
+        {
+          "clip": "Run",
+          "durationSeconds": 0.76667,
+          "channels": 57,
+          "minimumSoleYMeters": -0.006783,
+          "highestBothSolesYMeters": 0.012923
+        },
+        {
+          "clip": "Turn",
+          "durationSeconds": 1.1,
+          "channels": 57,
+          "minimumSoleYMeters": -1.7e-05,
+          "highestBothSolesYMeters": 0.0
+        },
+        {
+          "clip": "Interact",
+          "durationSeconds": 1.83333,
+          "channels": 57,
+          "minimumSoleYMeters": -6e-06,
+          "highestBothSolesYMeters": 0.0
+        },
+        {
+          "clip": "Dialogue",
+          "durationSeconds": 2.63333,
+          "channels": 57,
+          "minimumSoleYMeters": -3e-06,
+          "highestBothSolesYMeters": 0.0
+        }
+      ]
+    }
+  ],
+  "reproducibility": {
+    "avatar.glb": true,
+    "antoine.glb": true
+  }
+}
