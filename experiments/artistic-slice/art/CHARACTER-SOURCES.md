@@ -45,3 +45,5 @@ Le contrôle inspecte les primitives glTF, impose la présence des UV, normales,
 | Antoine | 52 634 | 1,748 m | 19 | 24 matériaux, 25 images intégrées |
 
 Les semelles sont à 0 m au repos. L’échantillonnage révèle jusqu’à 7,7 mm de pénétration sous le plan en marche et 6,8 mm en course. L’appui reste continu en marche et la phase aérienne de course atteint environ 13 mm aux semelles. Les deux GLB portent 57 canaux par clip et sept matériaux utilisent une carte normale. Les durées exportées de marche et de course sont 1,033 s et 0,767 s. Les vitesses nominales sur la phase d’appui approchent 1,05 m/s et 2,31 m/s à la cadence 1×. Le glissement dans le jeu dépend du déplacement du contrôleur et de la transition entre clips.
+
+Deux générations Blender indépendantes des maillages source donnent des fichiers identiques à l’octet. Un second rendu indépendant, lancé avec `--only antoine --assets /tmp/watteau-portrait-repeat`, a également donné le même portrait WebP de 500 × 600 pixels à l’octet. Les empreintes de cette reconstruction sont dans le [rapport de contrôle](character-contact.json).

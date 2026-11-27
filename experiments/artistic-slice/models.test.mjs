@@ -6,7 +6,7 @@ test('le départ et les trois zones d’interaction sont atteignables sans trave
   assert(walkable(start.x, start.z))
   const point = { ...start }
   advance(point, 0, -14)
-  assert(point.z >= -1.31)
+  assert(point.z >= -1.31 && point.z <= -1.309)
   assert(distance(point, markers[0]) <= interactionDistance)
   advance(point, -7, 0)
   advance(point, 0, -4)
@@ -31,4 +31,12 @@ test('les diagonales gardent la même vitesse et les directions opposées se neu
   assert(x < 0 && z < 0)
   assert(Math.abs(Math.hypot(x, z) - 1) < 1e-12)
   assert.deepEqual(direction(new Set(['left', 'right', 'forward', 'back'])), [0, 0])
+})
+
+test('le contact avec un personnage converge au même bord à plusieurs cadences', () => {
+  for (const step of [.016, .09, .17, .55, 1.1, 2.3]) {
+    const position = { ...start }
+    for (let index = 0; index < Math.ceil(12 / step); index++) advance(position, 0, -step)
+    assert(position.z >= -1.31 && position.z < -1.309)
+  }
 })

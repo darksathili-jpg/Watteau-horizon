@@ -5,7 +5,7 @@
     "samplesPerClip": 91,
     "interpolation": "STEP ou LINEAR selon le canal, interpolation sphérique pour les rotations LINEAR",
     "soleDefinition": "Sommets au repos à moins de 0,1 mm du plan Y = 0, skinnés par le squelette",
-    "command": "blender -b --python-exit-code 1 --python experiments/artistic-slice/art/character-contact.py -- /tmp/watteau-glb-verification"
+    "command": "python3 experiments/artistic-slice/art/character-contact.py /tmp/watteau-glb-verification"
   },
   "characters": [
     {
@@ -127,6 +127,10 @@
   ],
   "reproducibility": {
     "avatar.glb": true,
-    "antoine.glb": true
+    "antoine.glb": true,
+    "antoine.webp": {
+      "byteIdentical": true,
+      "sha256": "1717120dada822588b6cae3f9dbd663a4ccf9e9478e62992b3ff9b781094cf94"
+    }
   }
 }

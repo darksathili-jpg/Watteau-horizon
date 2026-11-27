@@ -214,7 +214,7 @@ export async function mountEngine(container, callbacks, signal) {
         shadow.position.x = position.x
         shadow.position.z = position.z
         const wanted = now < gestureUntil && !controls.reduced ? 'Interact'
-          : !actualSpeed ? 'Idle' : now < turnUntil && !controls.reduced ? 'Turn' : running ? 'Run' : 'Walk'
+          : actualSpeed < .03 ? 'Idle' : now < turnUntil && !controls.reduced ? 'Turn' : running ? 'Run' : 'Walk'
         player.activate(wanted)
         companion.activate(controls.dialogue && !controls.reduced ? 'Dialogue' : 'Idle')
         const strideRate = wanted === 'Walk' ? THREE.MathUtils.clamp(actualSpeed / walkClipSpeed, .18, 1.45)

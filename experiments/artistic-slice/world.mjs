@@ -25,14 +25,34 @@ export function walkable(x, z) {
       x > left - radius && x < right + radius && z > back - radius && z < front + radius)
 }
 
+function moveAxis(position, axis, amount) {
+  if (!amount) return
+  const from = position[axis]
+  const canMove = (part) => axis === 'x'
+    ? walkable(from + amount * part, position.z)
+    : walkable(position.x, from + amount * part)
+  if (canMove(1)) {
+    position[axis] = from + amount
+    return
+  }
+
+  // Resolve the reachable part of a blocked substep for stable contact across frame rates.
+  let free = 0
+  let blocked = 1
+  for (let index = 0; index < 9; index++) {
+    const middle = (free + blocked) / 2
+    if (canMove(middle)) free = middle
+    else blocked = middle
+  }
+  position[axis] = from + amount * free
+}
+
 export function advance(position, x, z) {
   // Small substeps keep collisions sound at wall corners and on slow devices.
   const steps = Math.max(1, Math.ceil(Math.hypot(x, z) / .15))
   for (let step = 0; step < steps; step++) {
-    const nextX = position.x + x / steps
-    const nextZ = position.z + z / steps
-    if (walkable(nextX, position.z)) position.x = nextX
-    if (walkable(position.x, nextZ)) position.z = nextZ
+    moveAxis(position, 'x', x / steps)
+    moveAxis(position, 'z', z / steps)
   }
 }
 
